@@ -21,6 +21,7 @@ class MStoreDashboardPresenter extends CleanPresenter {
  TextEditingController phoneNumber = new TextEditingController();
  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
  MStoreUseCase mstoreUseCase;
+ String storeName;
 
  MStoreDashboardPresenter(CleanPageState<CleanPresenter> cleanPageState)
       : super(cleanPageState);
@@ -28,10 +29,12 @@ class MStoreDashboardPresenter extends CleanPresenter {
   void onViewInit() {
     this.mstoreUseCase=GetIt.I.get<MStoreUseCase>();
     this.fetchGlobalProductItem();
+    if(Constants.instance.mstoreData != null){
+      this.storeName=Constants.instance.mstoreData.store_info.name;
+    }
   }
 
   fetchGlobalProductItem() async{
-    print("Fetching Global products items");
     try{
       Constants.instance.globalItems = await mstoreUseCase.getGlobalProducts();
       print("fetching products item");
@@ -48,7 +51,7 @@ class MStoreDashboardPresenter extends CleanPresenter {
         case DioErrorType.RESPONSE:
           scaffoldKey.currentState.showSnackBar(
             SnackBar(
-              content: Text("Authentication Failed"),
+              content: Text("Unable to fetch Product list"),
             ),
           );
           break;

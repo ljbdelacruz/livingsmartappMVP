@@ -6,6 +6,7 @@
 
 import 'dart:async';
 import 'package:clean_data/base/architechture.dart';
+import 'package:clean_data/usecase/mstore_use_case.dart';
 import 'package:clean_data/usecase/unauthenticated_use_case.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,8 @@ class DashboardPresenter extends CleanPresenter {
   int currentTab = 2;
   LivingSmartDrawerVM drawerVM;
   CustomerUseCase customerUseCase;
+  MStoreUseCase mstoreUseCase;
+
   UnauthenticatedUseCase unauthUseCase;
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   List<LivingSmartStores> stores = [];
@@ -36,16 +39,56 @@ class DashboardPresenter extends CleanPresenter {
     // TODO: implement onViewInit
     this.customerUseCase=GetIt.I.get<CustomerUseCase>();
     this.unauthUseCase=GetIt.I.get<UnauthenticatedUseCase>();
+    this.mstoreUseCase=GetIt.I.get<MStoreUseCase>();
+
     if(Constants.instance.session != null){
       drawerVM = LivingSmartDrawerVM(name: Constants.instance.session.user.name, email: Constants.instance.session.user.email, appVersion: Constants.instance.appVersion, 
-      // showMStore: Constants.instance.session.user.role == "mstore" ? true : false, 
-      // showMCS: Constants.instance.session.user.role == "mcs" ? true : false
+      showMStore: Constants.instance.session.user.role == "mstore" ? true : false, 
+      showMCS: Constants.instance.session.user.role == "mcs" ? true : false
       );
     }else{
-      drawerVM = LivingSmartDrawerVM(appVersion: Constants.instance.appVersion);
+      drawerVM = LivingSmartDrawerVM(appVersion: Constants.instance.appVersion, showMStore: false, showMCS:false);
     }
     this.fetchStoreList();
+    if(Constants.instance.session != null){
+      if(Constants.instance.session.user.role == "mstore"){
+          this.getMstoreData();
+      }
+    }
+
+
   }
+  getMstoreData() async{
+    print("Fetching MStore Data here");
+    try{
+      Constants.instance.mstoreData = await mstoreUseCase.getStoreInfo();
+    }on DioError catch (e) {
+       switch (e.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("No Internet Connection available"),
+            ),
+          );
+          break;
+        case DioErrorType.RESPONSE:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to fetch MStore data"),
+            ),
+          );
+          break;
+        default:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to process this request at this time"),
+            ),
+          );
+          break;
+      }
+    }
+  }
+  
   navigateSideMenu(int option){
     switch(option){
       case 0:

@@ -29,8 +29,8 @@ class LoginPresenter extends CleanPresenter {
     this.userAuthUseCase=GetIt.I.get<UserAuthUseCase>();
     // this.email.text="store1@mstore.com";
     // this.password.text="12345678";
-    this.email.text="ljbdelacruz05@gmail.com";
-    this.password.text="tester01";
+    this.email.text="store1@mstore.com";
+    this.password.text="12345678";
   }
   void login()async{
     try {

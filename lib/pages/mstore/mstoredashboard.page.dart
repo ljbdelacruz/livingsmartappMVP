@@ -10,10 +10,15 @@ import 'package:clean_data/base/architechture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_section_table_view/flutter_section_table_view.dart';
 import 'package:foody_ui/components/header/tabbed1.header.dart';
+import 'package:foody_ui/util/text_style_util.dart';
+import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/pages/mstore/mstoredashboard.presenter.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:livingsmart_app/services/navigator.service.dart';
+import 'package:foody_ui/components/cells/fooditem1widget.cells.dart';
+
 
 class MStoreDashboardPage extends CleanPage {
   @override
@@ -62,8 +67,12 @@ class MStoreDashboardPageState extends CleanPageState<MStoreDashboardPresenter> 
         ],
       ),
       body:Container(child:Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children:[
+        Container(
+          padding:EdgeInsets.only(left:15),
+          child:Text(presenter.storeName, style:TextStyleUtil.textNormal(fontSz:20, tColor:Colors.grey))),
         tabbedOptions(),
         transactionHist(),
       ]))
@@ -163,9 +172,30 @@ class MStoreDashboardPageState extends CleanPageState<MStoreDashboardPresenter> 
 
 
   Widget inventoryTab(){
-    return SingleChildScrollView(child:Column(children:[
-      Text("Inventory Tab"),
-    ]));
+    if(Constants.instance.mstoreData.products.length > 0){
+      return Container(child: SectionTableView(
+            sectionCount: 1,
+            numOfRowInSection: (section) {
+              return Constants.instance.mstoreData.products.length;
+            },
+            cellAtIndexPath: (section, row) {
+              var item = Constants.instance.globalItems[row];
+              return FoodItemWidget(FoodItemWidgetVM(name:item.name, price:item.price, currency:Constants.instance.currency, image: item.image != "null" ? Constants.instance.baseURL+item.image : Constants.instance.noImageDefault), (){
+                //TODO: request add item
+              });
+            },
+            divider: Container(
+              color: Colors.grey,
+              height: 1.0,
+            ),
+      ));
+    }else{
+      return Container(
+        child: Center(child: Text("No Products Available")));
+    }
+    // return SingleChildScrollView(child:Column(children:[
+    //   Text("Inventory Tab"),
+    // ]));
   }
   Widget transactionCells(){
     return Column(children:[

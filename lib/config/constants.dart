@@ -25,5 +25,6 @@ class Constants{
   int selectedProdId = 0;
   int selectedStoreId = 0;
   String currency = "PHP";
+  LivingSmartStoreInfo mstoreData;
 
 }

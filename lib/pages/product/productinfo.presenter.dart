@@ -142,7 +142,7 @@ class ProductInfoPresenter extends CleanPresenter {
           case DioErrorType.RESPONSE:
             scaffoldKey.currentState.showSnackBar(
               SnackBar(
-                content: Text("Unable to remove cart"),
+                content: Text("Unable to add to cart"),
               ),
             );
             break;

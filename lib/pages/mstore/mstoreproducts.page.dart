@@ -10,7 +10,7 @@ import 'package:flutter_section_table_view/flutter_section_table_view.dart';
 import 'package:foody_ui/components/header/tabbed1.header.dart';
 import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/pages/mstore/mstoreproducts.presenter.dart';
-
+import 'package:foody_ui/components/cells/fooditem1widget.cells.dart';
 
 class MStoreProductsPage extends CleanPage {
   @override
@@ -94,12 +94,15 @@ class MStoreProductsPageState extends CleanPageState<MStoreProductPresenter> {
         child: SectionTableView(
           sectionCount: 1,
           numOfRowInSection: (section) {
-            return items.length;
+            return Constants.instance.globalItems.length;
           },
           cellAtIndexPath: (section, row) {
-            return Container(
-              child: items[row],
-            );
+            var item = Constants.instance.globalItems[row];
+            return FoodItemWidget(FoodItemWidgetVM(name:item.name, price:item.price, currency:Constants.instance.currency, image: item.image != "null" ? Constants.instance.baseURL+item.image : Constants.instance.noImageDefault), (){
+              //TODO: request add item
+              print("Requesting products");
+              presenter.requestProductAdd(item.id);
+            });
           },
           divider: Container(
             color: Colors.grey,
@@ -110,7 +113,22 @@ class MStoreProductsPageState extends CleanPageState<MStoreProductPresenter> {
     );
   }
   Widget inStoreProducts(){
-    return Container();
+    return Container(child: SectionTableView(
+            sectionCount: 1,
+            numOfRowInSection: (section) {
+              return Constants.instance.mstoreData.products.length;
+            },
+            cellAtIndexPath: (section, row) {
+              var item = Constants.instance.globalItems[row];
+              return FoodItemWidget(FoodItemWidgetVM(name:item.name, price:item.price, currency:Constants.instance.currency, image: item.image != "null" ? Constants.instance.baseURL+item.image : Constants.instance.noImageDefault), (){
+                //TODO: 
+              });
+            },
+            divider: Container(
+              color: Colors.grey,
+              height: 1.0,
+            ),
+      ));
   }
 
   Widget productItem(bool isRequested, {String title = ""}){
