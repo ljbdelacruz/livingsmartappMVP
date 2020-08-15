@@ -11,6 +11,7 @@ import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/pages/cart/cart.presenter.dart';
 import 'package:foody_ui/components/carditem/cartitem2.widget.dart';
 import 'package:livingsmart_app/services/navigator.service.dart';
+import 'package:livingsmart_app/services/pickermodal.service.dart';
 
 class CartItemPage extends CleanPage {
   @override
@@ -64,25 +65,32 @@ class CartItemPageState extends CleanPageState<CartPresenter> {
   Widget bottomNav(){
     var price = presenter.calculatePrice();
     return Container(
-      width:MediaQuery.of(context).size.width,
-      height:70,
-      child:Row(
+      height: presenter.defaultAddress != null ? 110 : 70,
+      child: Column(children:[
+        presenter.defaultAddress != null ? Container(height:40, child: Text(presenter.defaultAddress.address, style:TextStyleUtil.textNormal(fontSz:12))) : Container(child:OutlineButton(onPressed:(){
+          //TODO: select delivery address
+          PickerModalService.instance.pickerAddress(context, (address){
+            presenter.setDefaultAddress(address);
+          });
+        }, child: Text("Select Delivery Address", style:TextStyleUtil.textNormal(fontSz:9, tColor:Colors.grey)))),
+        Container(width:MediaQuery.of(context).size.width,height:70,child:Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children:[
-      Padding(padding:EdgeInsets.only(left:20), child:Text("PHP "+price.toString(), style:TextStyleUtil.textBold(fontSz:20, tColor:Colors.black))),
-      checkoutBtn()
-
-    ]));
+        Padding(padding:EdgeInsets.only(left:20), child:Text("PHP "+price.toString(), style:TextStyleUtil.textBold(fontSz:20, tColor:Colors.black))),
+        checkoutBtn()
+    ]))]));
   }
 
   Widget checkoutBtn(){
-    return Container(
+    return GestureDetector(onTap: (){
+      presenter.preCheckoutItem();
+    }, child: Container(
       padding:EdgeInsets.all(20),
       color:Colors.red,
       child:Row(children:[
       Icon(Icons.shopping_cart, size:20, color:Colors.white),
       SizedBox(width:10),
       Text("Checkout", style:TextStyleUtil.textBold(fontSz:15, tColor:Colors.white))
-    ]));
+    ])));
   }
 }

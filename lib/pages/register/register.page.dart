@@ -58,7 +58,7 @@ class RegisterPageState extends CleanPageState<RegisterPresenter> {
             Positioned(
               top: config.App(context).appHeight(29.5) - 50,
               child: Container(
-                decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.all(Radius.circular(10)), boxShadow: [
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(10)), boxShadow: [
                   BoxShadow(
                     blurRadius: 50,
                     color: Theme.of(context).hintColor.withOpacity(0.2),

@@ -56,6 +56,16 @@ class MStoreDashboardPageState extends CleanPageState<MStoreDashboardPresenter> 
           ),
           IconButton(
             icon: Icon(
+              Icons.linear_scale,
+              color: Theme.of(context).hintColor,
+            ),
+            onPressed: () {
+              NavigatorService.instance.toMStoreTransactions(context);
+              // NavigatorService.instance.mstoreNotification(context);
+            },
+          ),
+          IconButton(
+            icon: Icon(
               Icons.list,
               color: Theme.of(context).hintColor,
             ),

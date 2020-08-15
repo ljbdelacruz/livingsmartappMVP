@@ -14,13 +14,6 @@ import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/services/navigator.service.dart';
 
 
-// class HomeSubPage extends StatefulWidget {
-  // final NormalCallback refreshHome;
-  // final HomeSubPageVM vm;
-//   HomeSubPage(this.vm, this.refreshHome);
-//   @override
-//   HomeSubPageState createState() => HomeSubPageState();
-// }
 
 class HomeSubPage extends StatelessWidget {
   final NormalCallback refreshHome;
@@ -82,7 +75,7 @@ class HomeSubPage extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   subtitle: Text(
-                    "Address here"
+                    vm.address
                     // S.of(context).near_to + " " + (settingsRepo.deliveryAddress.value?.address ?? S.of(context).unknown),
                     // style: Theme.of(context).textTheme.caption,
                   ),
@@ -130,5 +123,6 @@ class HomeSubPage extends StatelessWidget {
 class HomeSubPageVM{
  List<LivingSmartStores> stores = [];
  ShoppingCartButtonWidgetVM cartButton;
- HomeSubPageVM(this.stores, this.cartButton);
+ String address;
+ HomeSubPageVM(this.stores, this.cartButton, {this.address="Address Here"});
 }

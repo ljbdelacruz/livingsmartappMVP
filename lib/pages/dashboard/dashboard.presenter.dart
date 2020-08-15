@@ -6,6 +6,7 @@
 
 import 'dart:async';
 import 'package:clean_data/base/architechture.dart';
+import 'package:clean_data/usecase/address_use_case.dart';
 import 'package:clean_data/usecase/mstore_use_case.dart';
 import 'package:clean_data/usecase/unauthenticated_use_case.dart';
 import 'package:dio/dio.dart';
@@ -25,13 +26,16 @@ class DashboardPresenter extends CleanPresenter {
   LivingSmartDrawerVM drawerVM;
   CustomerUseCase customerUseCase;
   MStoreUseCase mstoreUseCase;
+  AddressUseCase addressUseCase;
 
   UnauthenticatedUseCase unauthUseCase;
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   List<LivingSmartStores> stores = [];
   HomeSubPageVM homeSubpage = new HomeSubPageVM([], ShoppingCartButtonWidgetVM(cartCount: Constants.instance.cartStores.length));
 
- DashboardPresenter(CleanPageState<CleanPresenter> cleanPageState)
+  bool isDeliveryInProgress=false;
+  double deliveryProgress=0.01;
+  DashboardPresenter(CleanPageState<CleanPresenter> cleanPageState)
       : super(cleanPageState);
 
   @override
@@ -40,12 +44,15 @@ class DashboardPresenter extends CleanPresenter {
     this.customerUseCase=GetIt.I.get<CustomerUseCase>();
     this.unauthUseCase=GetIt.I.get<UnauthenticatedUseCase>();
     this.mstoreUseCase=GetIt.I.get<MStoreUseCase>();
+    this.addressUseCase=GetIt.I.get<AddressUseCase>();
 
     if(Constants.instance.session != null){
       drawerVM = LivingSmartDrawerVM(name: Constants.instance.session.user.name, email: Constants.instance.session.user.email, appVersion: Constants.instance.appVersion, 
       showMStore: Constants.instance.session.user.role == "mstore" ? true : false, 
-      showMCS: Constants.instance.session.user.role == "mcs" ? true : false
+      showMCS: Constants.instance.session.user.role == "rider" ? true : false
       );
+      this.fetchDefaultDeliveryAddress();
+      this.fetchUserDeliveryAddress();
     }else{
       drawerVM = LivingSmartDrawerVM(appVersion: Constants.instance.appVersion, showMStore: false, showMCS:false);
     }
@@ -55,11 +62,81 @@ class DashboardPresenter extends CleanPresenter {
           this.getMstoreData();
       }
     }
-
-
+    Constants.instance.mapService.getCurrentLocation((){
+      this.getAddress();
+      // NavigatorService.instance.toDeliveryInfo(context);
+    });
   }
+
+  fetchDefaultDeliveryAddress() async{
+    try{
+      Constants.instance.defaultAddress = await addressUseCase.getCustomerDefaultAddress();
+    }on DioError catch (e) {
+       switch (e.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("No Internet Connection available"),
+            ),
+          );
+          break;
+        case DioErrorType.RESPONSE:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to fetch Addresses"),
+            ),
+          );
+          break;
+        default:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to process this request at this time"),
+            ),
+          );
+          break;
+      }
+    }
+  }
+
+  fetchUserDeliveryAddress() async{
+    try{
+      Constants.instance.userAddresses = await addressUseCase.listCustomerAddresses();
+    }on DioError catch (e) {
+       switch (e.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("No Internet Connection available"),
+            ),
+          );
+          break;
+        case DioErrorType.RESPONSE:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to fetch Addresses"),
+            ),
+          );
+          break;
+        default:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to process this request at this time"),
+            ),
+          );
+          break;
+      }
+    }
+  }
+  getAddress(){
+    if(Constants.instance.mapService.currentPosition != null){
+      Constants.instance.mapService.getAddressStringByPosition(Constants.instance.mapService.currentPosition, (address){
+        homeSubpage.address=address;
+        cleanPageState.setState(() {});
+      });
+    }
+  }
+
   getMstoreData() async{
-    print("Fetching MStore Data here");
     try{
       Constants.instance.mstoreData = await mstoreUseCase.getStoreInfo();
     }on DioError catch (e) {
@@ -106,15 +183,15 @@ class DashboardPresenter extends CleanPresenter {
       case 4:
         break;
       case 5:
+        //settings
+        NavigatorService.instance.toSettings(context);
         break;
       case 6:
-        if(Constants.instance.session != null){
-          NavigatorService.instance.toMStore(context);
-        }else{
-          NavigatorService.instance.toLoginPagePR(context);
-        }
+        NavigatorService.instance.toMStore(context);
         break;
       case 7:
+        //Driver 
+        NavigatorService.instance.toDriverDashboard(context);
         break;
       case 8:
         NavigatorService.instance.toLoginPagePR(context);

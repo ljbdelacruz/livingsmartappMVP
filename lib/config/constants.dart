@@ -2,12 +2,15 @@
 
 
 
+import 'package:clean_data/model/address.dart';
 import 'package:clean_data/model/cart.dart';
 import 'package:clean_data/model/product.dart';
 import 'package:clean_data/model/user_session.dart';
 import 'package:clean_data/model/userstore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:livingsmart_app/services/map.service.dart';
+import 'package:clean_data/model/transactions.dart';
 
 class Constants{
   String baseURL = "http://ec2-54-254-243-70.ap-southeast-1.compute.amazonaws.com:8000";
@@ -19,12 +22,19 @@ class Constants{
   List<Product> globalItems = [];
   List<LivingSmartStores> allStoreList = [];
   List<CartStore> cartStores = [];
+  List<LSAddress> userAddresses = [];
+  LSAddress defaultAddress;
 
   String cartItemHeader="";
   int cartStoreId = 0;
   int selectedProdId = 0;
   int selectedStoreId = 0;
+  MStoreTransaction selectedTransaction;
   String currency = "PHP";
   LivingSmartStoreInfo mstoreData;
+  MapService mapService = new MapService();
+
+  //Driver
+  String selectedJobTransCode="";
 
 }

@@ -6,10 +6,14 @@ import 'package:clean_data/base/architechture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
+import 'package:foody_ui/services/color.service.dart';
+import 'package:foody_ui/util/app_color_util.dart';
 import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/pages/dashboard/dashboard.presenter.dart';
 import 'package:foody_ui/components/drawer/livingsmart.drawer.dart';
 import 'package:livingsmart_app/pages/dashboard/subpage/home.subpage.dart';
+import 'package:livingsmart_app/services/navigator.service.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class DashboardPage extends CleanPage {
 
@@ -72,7 +76,44 @@ class DashboardPageState extends CleanPageState<DashboardPresenter> {
         //   // Navigator.of(context).pushReplacementNamed('/Pages', arguments: widget.currentTab);
         // }),
         body: bodyContent(),
-        bottomNavigationBar: BottomNavigationBar(
+        bottomNavigationBar:bottomNav() 
+      ),
+    );
+  }
+  Widget deliveryStatus(){
+    return presenter.isDeliveryInProgress ? GestureDetector(onTap:(){
+      NavigatorService.instance.toDeliveryInfo(context);
+    }, child: Container(
+        height:100,
+        child:Column(children:[
+          SizedBox(height:10),
+          Text("Processing Order from  Aleng Nena's"),
+          Container(
+            width:MediaQuery.of(context).size.width-20,
+            height:40,
+                        margin: EdgeInsets.symmetric(horizontal: 30.0),
+                        child: new LinearPercentIndicator(
+                          lineHeight: 12.0,
+                          percent: presenter.deliveryProgress,
+                          progressColor: ColorsService.instance.primaryColor(),
+                          backgroundColor: Colors.grey,
+                        ),
+          ),
+        ])
+      )) : Container();
+  }
+
+  Widget bottomNav(){
+    return Container(
+      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+                          boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), offset: Offset(0, -2), blurRadius: 5.0)]),
+      height: presenter.isDeliveryInProgress ? 186 : 80,
+      child:Column(children:[
+      deliveryStatus(),
+      SizedBox(height:10),
+      BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Theme.of(context).accentColor,
           selectedFontSize: 0,
@@ -114,7 +155,7 @@ class DashboardPageState extends CleanPageState<DashboardPresenter> {
                   child: new Icon(Icons.home, color: Theme.of(context).primaryColor),
                 )),
             BottomNavigationBarItem(
-              icon: new Icon(Icons.shopping_cart),
+              icon: new Icon(Icons.local_shipping),
               title: new Container(height: 0.0),
             ),
             BottomNavigationBarItem(
@@ -123,7 +164,6 @@ class DashboardPageState extends CleanPageState<DashboardPresenter> {
             ),
           ],
         ),
-      ),
-    );
+    ]));
   }
 }

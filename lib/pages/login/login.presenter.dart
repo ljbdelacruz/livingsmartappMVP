@@ -27,10 +27,12 @@ class LoginPresenter extends CleanPresenter {
   void onViewInit() {
     // TODO: implement onViewInit
     this.userAuthUseCase=GetIt.I.get<UserAuthUseCase>();
-    // this.email.text="store1@mstore.com";
+    // this.email.text="mstore@livingsmart.com";
     // this.password.text="12345678";
-    this.email.text="store1@mstore.com";
+    this.email.text="rider@livingsmart.com";
     this.password.text="12345678";
+    // this.email.text="ljbdelacruz123@gmail.com";
+    // this.password.text="12345678";
   }
   void login()async{
     try {

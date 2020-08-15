@@ -6,12 +6,15 @@
 import 'dart:async';
 
 import 'package:clean_data/base/architechture.dart';
+import 'package:clean_data/model/address.dart';
 import 'package:clean_data/model/cart.dart';
+import 'package:clean_data/usecase/address_use_case.dart';
 import 'package:clean_data/usecase/customer_use_case.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:livingsmart_app/config/constants.dart';
+import 'package:livingsmart_app/services/navigator.service.dart';
 
 class CartPresenter extends CleanPresenter {
  CustomerUseCase customerUseCase;
@@ -20,7 +23,9 @@ class CartPresenter extends CleanPresenter {
  int storeIdSelected=0;
  String cartItemHeader;
  int storeCartId = 0;
- List<CartStoreItem> cartStoreItems = []; 
+ List<CartStoreItem> cartStoreItems = [];
+ LSAddress defaultAddress=Constants.instance.defaultAddress;
+
 
  CartPresenter(CleanPageState<CleanPresenter> cleanPageState)
       : super(cleanPageState);
@@ -37,7 +42,6 @@ class CartPresenter extends CleanPresenter {
     }
     this.fetchStoreCart();
   }
-
   fetchStoreCart() async{
     try{
       Constants.instance.cartStores = await this.customerUseCase.getCartStores();
@@ -136,9 +140,9 @@ class CartPresenter extends CleanPresenter {
   }
   increment(CartStoreItem item){
     cleanPageState.setState((){
-      if(item.quantity < item.stock_count){
-        item.quantity++;
-      }
+      item.quantity++;
+      // if(item.quantity < item.stock_count){
+      // }
     });
   }
   decrement(CartStoreItem item){
@@ -170,6 +174,90 @@ class CartPresenter extends CleanPresenter {
           scaffoldKey.currentState.showSnackBar(
             SnackBar(
               content: Text("Unable to remove item"),
+            ),
+          );
+          break;
+        default:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to process this request at this time"),
+            ),
+          );
+          break;
+      }
+    }
+  }
+  setDefaultAddress(LSAddress address){
+    Constants.instance.defaultAddress=address;
+    this.defaultAddress=address;
+    cleanPageState.setState(() {});
+  }
+
+  preCheckoutItem(){
+    this.cartStoreItems.forEach((element) { 
+      print(this.storeCartId.toString()+" "+element.id.toString()+" "+element.quantity.toString());
+      this.addItem(this.storeCartId, element.id, element.quantity);
+    });
+    this.checkout();
+  }
+  addItem(int storeId, int prodId, int quantity) async{
+     try{
+      var response = await customerUseCase.addProductToCart(storeId, prodId, quantity);
+            scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Updated Item"),
+            ),
+      );
+     }on DioError catch (e) {
+       switch (e.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("No Internet Connection available"),
+            ),
+          );
+          break;
+        case DioErrorType.RESPONSE:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to update items"),
+            ),
+          );
+          break;
+        default:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to process this request at this time"),
+            ),
+          );
+          break;
+      }
+    }
+  }
+
+
+  checkout() async{
+    try{
+      var response = await customerUseCase.checkoutCart(this.storeCartId, this.defaultAddress.id);
+      scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Checkout Success"),
+            ),
+      );
+      NavigatorService.instance.toDashboardPR(context);
+     }on DioError catch (e) {
+       switch (e.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("No Internet Connection available"),
+            ),
+          );
+          break;
+        case DioErrorType.RESPONSE:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to checkout cart"),
             ),
           );
           break;
