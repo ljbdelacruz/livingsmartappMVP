@@ -29,11 +29,45 @@ class LoginPresenter extends CleanPresenter {
     this.userAuthUseCase=GetIt.I.get<UserAuthUseCase>();
     // this.email.text="mstore@livingsmart.com";
     // this.password.text="12345678";
-    this.email.text="rider@livingsmart.com";
-    this.password.text="12345678";
-    // this.email.text="ljbdelacruz123@gmail.com";
+    // this.email.text="rider@livingsmart.com";
     // this.password.text="12345678";
+    this.email.text="09493169481";
+    // this.email.text="ljbdelacruz123@gmail.com";
+    this.password.text="12345678";
   }
+  void mobileLogin() async{
+    try {
+      Constants.instance.session = await userAuthUseCase.mobileLogin(email.text, password.text, true);
+      if(Constants.instance.session != null){
+        NavigatorService.instance.toDashboardPR(context);
+      }
+    }on DioError catch (e) {
+       switch (e.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("No Internet Connection available"),
+            ),
+          );
+          break;
+        case DioErrorType.RESPONSE:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Authentication Failed"),
+            ),
+          );
+          break;
+        default:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to process this request at this time"),
+            ),
+          );
+          break;
+      }
+    }
+  }
+
   void login()async{
     try {
       Constants.instance.session = await userAuthUseCase.login(email.text, password.text, true);

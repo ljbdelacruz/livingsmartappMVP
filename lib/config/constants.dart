@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:livingsmart_app/services/map.service.dart';
 import 'package:clean_data/model/transactions.dart';
+import 'package:clean_data/model/transactions.dart';
 
 class Constants{
   String baseURL = "http://ec2-54-254-243-70.ap-southeast-1.compute.amazonaws.com:8000";
@@ -24,6 +25,7 @@ class Constants{
   List<CartStore> cartStores = [];
   List<LSAddress> userAddresses = [];
   LSAddress defaultAddress;
+  List<UserTransaction> userTransactions = [];
 
   String cartItemHeader="";
   int cartStoreId = 0;

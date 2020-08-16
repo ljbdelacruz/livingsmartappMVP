@@ -29,6 +29,15 @@ class DriverDashboardPageState extends CleanPageState<DriverPresenter> {
     // TODO: implement build
     return SafeArea(child: Scaffold(
       key:presenter.scaffoldKey,
+      appBar:AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          "MCS Dashboard",
+          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
+        )
+      ),
       body:bodyContent(),
       bottomNavigationBar: bottomNav(),
     ));
@@ -41,27 +50,17 @@ class DriverDashboardPageState extends CleanPageState<DriverPresenter> {
       case 1:
         return DriverHomeSubPage();
       case 2:
-        if(presenter.currentActiveDelivery != null && presenter.currentDeliveryInfo != null){
           return JobListSubPage(JobListSubPageVM(presenter.jobList, presenter.completedDeliveries, presenter.currentDeliveryInfo, presenter.currentActiveDelivery), (String transCode){
             //TODO: view job info
-            print("Viewing job info");
-            print(transCode);
             Constants.instance.selectedJobTransCode=transCode;
             NavigatorService.instance.toDriverDirection(context);
           },(String transCode){
             //TODO: accept job
-          } );
-        }else{
-          return JobListSubPage(JobListSubPageVM(presenter.jobList, presenter.completedDeliveries, null, null), (String transCode){
-            //TODO: view job info
-            print("Viewing job info");
-            print(transCode);
-            Constants.instance.selectedJobTransCode=transCode;
-            NavigatorService.instance.toDriverDirection(context);
-          },(String transCode){
-            //TODO: accept job
+            presenter.acceptDelivery(transCode);
+          }, (String transCode){
+            //TODO: delivered job
+            
           });
-        }
     }
     return Column(children:[
       

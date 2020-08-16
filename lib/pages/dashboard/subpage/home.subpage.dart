@@ -24,26 +24,6 @@ class HomeSubPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        leading: new IconButton(
-          icon: new Icon(Icons.sort, color: Colors.white),
-          onPressed: (){
-            if(Constants.instance.parentScaffoldKey != null){
-              Constants.instance.parentScaffoldKey.currentState.openDrawer();
-            }
-          },
-        ),
-        automaticallyImplyLeading: false,
-        backgroundColor: ColorsService.dirtyWhite(),
-        elevation: 0,
-        centerTitle: true,
-        title:Text("Living Smart"),
-        actions: <Widget>[
-          new ShoppingCartButtonWidget(vm.cartButton, (){
-            NavigatorService.instance.toCart(context);
-          }),
-        ],
-      ),
       body: RefreshIndicator(
         onRefresh: refreshHome,
         child: SingleChildScrollView(
@@ -122,7 +102,6 @@ class HomeSubPage extends StatelessWidget {
 
 class HomeSubPageVM{
  List<LivingSmartStores> stores = [];
- ShoppingCartButtonWidgetVM cartButton;
  String address;
- HomeSubPageVM(this.stores, this.cartButton, {this.address="Address Here"});
+ HomeSubPageVM(this.stores, {this.address="Address Here"});
 }

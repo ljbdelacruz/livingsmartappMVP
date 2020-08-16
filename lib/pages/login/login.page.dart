@@ -75,12 +75,12 @@ class _LoginPageState extends CleanPageState<LoginPresenter> {
                       controller: presenter.email,
                       keyboardType: TextInputType.emailAddress,
                       // onSaved: (input) => _con.user.email = input,
-                      validator: (input) => !input.contains('@') ? "Enter Valid Email" : null,
+                      // validator: (input) => !input.contains('@') ? "Enter Valid Email" : null,
                       decoration: InputDecoration(
-                        labelText: "Email",
+                        labelText: "Mobile Number",
                         labelStyle: TextStyle(color: Theme.of(context).accentColor),
                         contentPadding: EdgeInsets.all(12),
-                        hintText: 'livingsmart@gmail.com',
+                        hintText: '09XXXXXXXXX',
                         hintStyle: TextStyle(color: Theme.of(context).focusColor.withOpacity(0.7)),
                         prefixIcon: Icon(Icons.alternate_email, color: Theme.of(context).accentColor),
                         border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.2))),
@@ -125,7 +125,8 @@ class _LoginPageState extends CleanPageState<LoginPresenter> {
                       color: ColorService.primaryColor(),
                       onPressed: () {
                         //TODO: Login
-                        presenter.login();
+                        presenter.mobileLogin();
+                        // presenter.login();
                       },
                     ),
                     SizedBox(height: 15),

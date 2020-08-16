@@ -31,7 +31,8 @@ class DashboardPresenter extends CleanPresenter {
   UnauthenticatedUseCase unauthUseCase;
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   List<LivingSmartStores> stores = [];
-  HomeSubPageVM homeSubpage = new HomeSubPageVM([], ShoppingCartButtonWidgetVM(cartCount: Constants.instance.cartStores.length));
+
+  HomeSubPageVM homeSubpage = new HomeSubPageVM([]);
 
   bool isDeliveryInProgress=false;
   double deliveryProgress=0.01;
@@ -61,6 +62,7 @@ class DashboardPresenter extends CleanPresenter {
       if(Constants.instance.session.user.role == "mstore"){
           this.getMstoreData();
       }
+      this.fetchUserTransactions();
     }
     Constants.instance.mapService.getCurrentLocation((){
       this.getAddress();
@@ -233,6 +235,69 @@ class DashboardPresenter extends CleanPresenter {
       }
     }
   }
+
+  fetchUserTransactions() async{
+    try{
+      Constants.instance.userTransactions = await customerUseCase.getTransactions();
+      cleanPageState.setState(() {});
+    }on DioError catch (e) {
+       switch (e.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("No Internet Connection available"),
+            ),
+          );
+          break;
+        case DioErrorType.RESPONSE:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to fetch transactions"),
+            ),
+          );
+          break;
+        default:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to process this request at this time"),
+            ),
+          );
+          break;
+      }
+    }
+  }
+
+  fetchTransactionInfo(String transCode) async{
+    try{
+      var data = await customerUseCase.getTransactionContent(transCode);
+      //view transaction info data
+    }on DioError catch (e) {
+       switch (e.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("No Internet Connection available"),
+            ),
+          );
+          break;
+        case DioErrorType.RESPONSE:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Failed transaction info"),
+            ),
+          );
+          break;
+        default:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to process this request at this time"),
+            ),
+          );
+          break;
+      }
+    }
+  }
+
 
 
 

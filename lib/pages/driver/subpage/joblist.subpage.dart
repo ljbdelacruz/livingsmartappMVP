@@ -14,7 +14,9 @@ class JobListSubPage extends StatelessWidget {
   final JobListSubPageVM vm;
   final GetStringData viewInfo;
   final GetStringData acceptjob;
-  JobListSubPage(this.vm, this.viewInfo, this.acceptjob);
+  final GetStringData deliveredJob;
+
+  JobListSubPage(this.vm, this.viewInfo, this.acceptjob, this.deliveredJob);
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +33,13 @@ class JobListSubPage extends StatelessWidget {
       height:MediaQuery.of(context).size.height/2,
       child:tabbedMenu(context));
   }
-   Widget tabbedMenu(BuildContext context){
+  Widget tabbedMenu(BuildContext context){
     return DefaultTabController(
                         length: 3,
                         // color:Colors.white,
                         child: Scaffold(
                         appBar: PreferredSize(child: Tabbed1Header(Tabbed1HeaderVM("", [
-                          Tab(text: "Jobs"),
+                          Tab(text: "Jobs("+vm.joblist.length.toString()+")"),
                           Tab(text: "Completed"),
                           Tab(text: "Current"),
                         ])), preferredSize: Size.fromHeight(100)),
@@ -45,7 +47,7 @@ class JobListSubPage extends StatelessWidget {
                         body:TabBarView(children: [
                           Container(child:jobsListTab(context)),
                           Container(child: completedTab(context)),
-                          Container()
+                          Container(child:currentDeliveryInfo(context))
                         ])
                       ),
     );
@@ -54,13 +56,64 @@ class JobListSubPage extends StatelessWidget {
   Widget jobsListTab(BuildContext context){
     return this.getTransactionsList(context, vm.joblist, (index){
       //TODO: btn click accept job
-
+      print("Accept job");
+      print(vm.joblist[index].transaction_code);
+      this.acceptjob(vm.joblist[index].transaction_code);
     });
   }
   Widget completedTab(BuildContext context){
     return this.getTransactionsList(context, vm.completedDel, (index){
         //TODO: btn click
     });
+  }
+  Widget currentDeliveryInfo(BuildContext context){
+    return vm.currentDeliveryInfo != null ? Container(
+      padding:EdgeInsets.all(20),
+      child: Column(children:[
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:[
+        Text("Store: "+vm.currentDeliveryInfo.details.store_name, style:TextStyleUtil.textBold(fontSz:10, tColor:Colors.grey)),
+        SizedBox(height:10),
+        Row(children:[
+          Icon(Icons.location_on, size:15, color:Colors.grey),
+          SizedBox(width:10),
+          Container(
+            width:MediaQuery.of(context).size.width-65,
+            child:Text("Pickup: "+vm.currentDeliveryInfo.details.store_address, style:TextStyleUtil.textBold(fontSz:10, tColor:Colors.grey)))
+        ]),
+        SizedBox(height:20),
+        Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children:[
+        Text("Name: "+vm.currentDeliveryInfo.details.customer_name, style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey)),
+        Text("# "+vm.currentDeliveryInfo.details.customer_mobile, style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey)),
+        ]),
+        SizedBox(height:10),
+        Row(children:[
+          Icon(Icons.location_on, size:15, color:Colors.grey),
+          SizedBox(width:10),
+          Container(
+            width:MediaQuery.of(context).size.width-65,
+            child:Text("Deliver: "+vm.currentDeliveryInfo.details.store_address, style:TextStyleUtil.textBold(fontSz:10, tColor:Colors.grey)))
+        ]),
+      ]),
+      SizedBox(height:20),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children:[
+        Container(
+          // width:MediaQuery.of(context).size.width-250,
+          child:Text(vm.currentDeliveryInfo.products.length.toString()+" Items", style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey))),
+          OutlineButton(onPressed:(){
+            this.viewInfo(vm.currentDeliveryInfo.details.transaction_code);
+          }, child: Text("INFO", style:TextStyleUtil.textNormal(fontSz:8))),
+          OutlineButton(onPressed:(){
+          }, child: Text("DELIVERED", style:TextStyleUtil.textNormal(fontSz:8))),
+          OutlineButton(onPressed:(){
+          }, child: Text("CANCELLED", style:TextStyleUtil.textNormal(fontSz:8))),
+      ]),
+    ])) : Container(child:Text("No Delivery In Progress"));
   }
 
   Widget getTransactionsList(BuildContext context, List<RiderDelivery> transactions, GetIntData click){
@@ -87,7 +140,7 @@ class JobListSubPage extends StatelessWidget {
       ),
     );
   }
-    Widget transactionCell(BuildContext context, RiderDelivery item, NormalCallback click){
+  Widget transactionCell(BuildContext context, RiderDelivery item, NormalCallback click){
     return Container(
       padding:EdgeInsets.all(20),
       child: Column(children:[

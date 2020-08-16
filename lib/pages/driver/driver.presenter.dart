@@ -85,7 +85,9 @@ class DriverPresenter extends CleanPresenter {
   fetchAvailableJobs() async{
     try{
       this.jobList = await mcsRiderUseCase.listAvailableDeliveries();
-      print("Fetching available jobs");
+      if(this.jobList.length <= 0){
+        this.fetchCurrentDelivery();
+      }
       cleanPageState.setState(() {});
     }on DioError catch (e) {
        switch (e.type) {
@@ -179,14 +181,7 @@ class DriverPresenter extends CleanPresenter {
 
   fetchDeliveryDetails(String transCode) async{
     try{
-      print("Fetching Deliveries");
       this.currentDeliveryInfo = await mcsRiderUseCase.getRiderDeliveryDetails(transCode);
-      print(this.currentDeliveryInfo.details);
-      print(this.currentDeliveryInfo.details.store_address);
-      print(this.currentDeliveryInfo.details.customer_latitude);
-      print(this.currentDeliveryInfo.details.customer_longitude);
-      print(this.currentDeliveryInfo.details.store_latitude);
-      print(this.currentDeliveryInfo.details.store_longitude);
       this.assignUserAddressMarker(Position(latitude:double.parse(this.currentDeliveryInfo.details.store_latitude), longitude:double.parse(this.currentDeliveryInfo.details.store_longitude)), Position(latitude:double.parse(this.currentDeliveryInfo.details.customer_latitude), longitude:double.parse(this.currentDeliveryInfo.details.customer_longitude)));
       cleanPageState.setState(() {});
     }on DioError catch (e) {
@@ -215,6 +210,93 @@ class DriverPresenter extends CleanPresenter {
       }
     }
   }
+
+  acceptDelivery(String transCode) async{
+    try{
+      var response = await mcsRiderUseCase.riderAcceptDelivery(transCode, 0, 0);
+      if(response != null){
+        scaffoldKey.currentState.showSnackBar(
+              SnackBar(
+                content: Text("Job Accepted!"),
+              ),
+        );
+        this.fetchAvailableJobs();
+      }else{
+        scaffoldKey.currentState.showSnackBar(
+              SnackBar(
+                content: Text("Unable to process job request"),
+              ),
+        );
+        this.fetchAvailableJobs();
+      }
+      // cleanPageState.setState(() {});
+    }on DioError catch (e) {
+       switch (e.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("No Internet Connection available"),
+            ),
+          );
+          break;
+        case DioErrorType.RESPONSE:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to accept job"),
+            ),
+          );
+          break;
+        default:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to process this request at this time"),
+            ),
+          );
+          break;
+      }
+    }
+  }
+
+  deliveredJob(String transCode) async{
+    try{
+      var response = await mcsRiderUseCase.triggerDelivered(transCode);
+      if(response.data != null){
+        this.currentDeliveryInfo=null;
+        scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Job Delivery Complete!"),
+            ),
+        );
+      }
+    }on DioError catch (e) {
+       switch (e.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("No Internet Connection available"),
+            ),
+          );
+          break;
+        case DioErrorType.RESPONSE:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to mark job as completed"),
+            ),
+          );
+          break;
+        default:
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Unable to process this request at this time"),
+            ),
+          );
+          break;
+      }
+    }
+  }
+
+
+
 
 
   @override

@@ -6,12 +6,14 @@ import 'package:clean_data/base/architechture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
+import 'package:foody_ui/components/buttons/shoppingcart.button.dart';
 import 'package:foody_ui/services/color.service.dart';
 import 'package:foody_ui/util/app_color_util.dart';
 import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/pages/dashboard/dashboard.presenter.dart';
 import 'package:foody_ui/components/drawer/livingsmart.drawer.dart';
 import 'package:livingsmart_app/pages/dashboard/subpage/home.subpage.dart';
+import 'package:livingsmart_app/pages/dashboard/subpage/usertransactions.subpage.dart';
 import 'package:livingsmart_app/services/navigator.service.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -47,7 +49,10 @@ class DashboardPageState extends CleanPageState<DashboardPresenter> {
           });
           break;
         case 3:
-          return Container();
+          return UserTransactionsSubPage(UserTransactionsSubPageVM(Constants.instance.userTransactions), (transCode){
+            presenter.fetchTransactionInfo(transCode);
+          });
+          // return Container();
           break;
         case 4:
           return Container();
@@ -69,6 +74,26 @@ class DashboardPageState extends CleanPageState<DashboardPresenter> {
       onWillPop: () async => false,
       child: Scaffold(
         key: presenter.scaffoldKey,
+        appBar: AppBar(
+          leading: new IconButton(
+            icon: new Icon(Icons.sort, color: Colors.white),
+            onPressed: (){
+              if(Constants.instance.parentScaffoldKey != null){
+                Constants.instance.parentScaffoldKey.currentState.openDrawer();
+              }
+            },
+          ),
+          automaticallyImplyLeading: false,
+          backgroundColor: ColorsService.dirtyWhite(),
+          elevation: 0,
+          centerTitle: true,
+          title:Text("Living Smart"),
+          actions: <Widget>[
+            new ShoppingCartButtonWidget(ShoppingCartButtonWidgetVM(cartCount: Constants.instance.cartStores.length), (){
+              NavigatorService.instance.toCart(context);
+            }),
+          ],
+        ),
         drawer: LivingSmartDrawer(presenter.drawerVM, (){}, (option){
           presenter.navigateSideMenu(option);
         }),
