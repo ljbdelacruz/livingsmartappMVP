@@ -61,6 +61,7 @@ class ForgotPageState extends CleanPageState<ForgotPresenter> with SingleTickerP
                         ),
                         color: ColorService.primaryColor(),
                         onPressed: () {
+                          presenter.resetPasswordAuth();
                           // presenter.restPasswordPre();
                         },
       ),

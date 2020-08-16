@@ -80,6 +80,47 @@ class ForgotPresenter extends CleanPresenter {
      }
   }
 
+  resetPasswordAuth() async{
+      try {
+        int pin = int.parse(this.pinT.text);
+        var response = await userAuthUseCase.restPassword(this.emailT.text, this.passwordT.text, this.rpasswordT.text, pin);
+        scaffoldKey.currentState.showSnackBar(
+              SnackBar(
+                content: Text("Password Changed"),
+              ),
+        );
+        Timer(Duration(milliseconds: 2000),(){
+          NavigatorService.instance.toLoginPagePR(context);
+        });
+      }on DioError catch (e) {
+        switch (e.type) {
+          case DioErrorType.CONNECT_TIMEOUT:
+            scaffoldKey.currentState.showSnackBar(
+              SnackBar(
+                content: Text("No Internet Connection available"),
+              ),
+            );
+            break;
+          case DioErrorType.RESPONSE:
+            print(e.response.toString());
+            scaffoldKey.currentState.showSnackBar(
+              SnackBar(
+                content: Text(e.response.data["message"].toString()),
+              ),
+            );
+            break;
+          default:
+            scaffoldKey.currentState.showSnackBar(
+              SnackBar(
+                content: Text("Unable to process this request at this time"),
+              ),
+            );
+            break;
+        }
+     }
+  }
+
+
   @override
   List<StreamController> get streamControllers => null;
 
