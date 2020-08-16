@@ -82,22 +82,7 @@ class ProductInfoPageState extends CleanPageState<ProductInfoPresenter> {
 
   Widget bottomNav(){
     if(presenter.selectedProd != null){
-    if(presenter.selectedProd.stock_count <= 0){
-      return Container(
-        width:MediaQuery.of(context).size.width,
-        height:150,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-        boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), offset: Offset(0, -2), blurRadius: 5.0)]),
-        child:Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children:[
-          Text("Out of Stock", style:TextStyleUtil.textBold(fontSz:20, tColor: Colors.red))
-        ]));
-    }else{
+
     return Container(
       width:MediaQuery.of(context).size.width,
       height:200,
@@ -155,9 +140,28 @@ class ProductInfoPageState extends CleanPageState<ProductInfoPresenter> {
                           ]),
                     ))
     ]));
-    }
-    }else{
-      return Container();
+
+
+    // if(presenter.selectedProd.stock_count <= 0){
+    //   return Container(
+    //     width:MediaQuery.of(context).size.width,
+    //     height:150,
+    //     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+    //     decoration: BoxDecoration(
+    //     color: Colors.white,
+    //     borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+    //     boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), offset: Offset(0, -2), blurRadius: 5.0)]),
+    //     child:Column(
+    //       mainAxisAlignment: MainAxisAlignment.center,
+    //       crossAxisAlignment: CrossAxisAlignment.center,
+    //       children:[
+    //       Text("Out of Stock", style:TextStyleUtil.textBold(fontSz:20, tColor: Colors.red))
+    //     ]));
+    // }else{
+    // }
+    // }else{
+    //   return Container();
+    // }
     }
   }
 

@@ -32,20 +32,34 @@ class UserTransactionsSubPage extends StatelessWidget {
   }
   Widget tabbedMenu(BuildContext context){
     return DefaultTabController(
-                        length: 2,
+                        length: 4,
                         // color:Colors.white,
                         child: Scaffold(
                         appBar: PreferredSize(child: Tabbed1Header(Tabbed1HeaderVM("", [
+                          Tab(text: "Pending("+vm.pending.length.toString()+")"),
+                          Tab(text: "Processing("+vm.processing.length.toString()+")"),
                           Tab(text: "For Delivery("+vm.forDelivery.length.toString()+")"),
                           Tab(text: "Completed"),
                         ])), preferredSize: Size.fromHeight(100)),
                         backgroundColor: Colors.transparent,
                         body:TabBarView(children: [
+                          Container(child:pending(context)),
+                          Container(child:processing(context)),
                           Container(child:forDelivery(context)),
                           Container(child: completed(context)),
                         ])
                       ),
     );
+  }
+  Widget pending(BuildContext context){
+    return getTransactionsList(context, vm.pending, (index){
+
+    });
+  }
+  Widget processing(BuildContext context){
+    return getTransactionsList(context, vm.processing, (index){
+
+    });
   }
 
   Widget forDelivery(BuildContext context){
@@ -130,6 +144,7 @@ class UserTransactionsSubPageVM{
   List<UserTransaction> transactions = [];
   List<UserTransaction> completed = [];
   List<UserTransaction> forDelivery = [];
+  List<UserTransaction> pending = [];
   List<UserTransaction> processing = [];
 
   UserTransactionsSubPageVM(this.transactions){
@@ -138,6 +153,10 @@ class UserTransactionsSubPageVM{
         this.completed.add(element);
       }else if(element.status == "for delivery"){
         this.forDelivery.add(element);
+      }else if(element.status == "pending"){
+        this.pending.add(element);
+      }else if(element.status == "processing"){
+        this.processing.add(element);
       }
     });
   }

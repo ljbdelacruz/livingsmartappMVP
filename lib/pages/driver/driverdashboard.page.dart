@@ -59,7 +59,7 @@ class DriverDashboardPageState extends CleanPageState<DriverPresenter> {
             presenter.acceptDelivery(transCode);
           }, (String transCode){
             //TODO: delivered job
-            
+            presenter.deliveredJob(transCode);
           });
     }
     return Column(children:[

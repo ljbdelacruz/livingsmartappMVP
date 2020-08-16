@@ -109,6 +109,7 @@ class JobListSubPage extends StatelessWidget {
             this.viewInfo(vm.currentDeliveryInfo.details.transaction_code);
           }, child: Text("INFO", style:TextStyleUtil.textNormal(fontSz:8))),
           OutlineButton(onPressed:(){
+            deliveredJob(vm.currentDeliveryInfo.details.transaction_code);
           }, child: Text("DELIVERED", style:TextStyleUtil.textNormal(fontSz:8))),
           OutlineButton(onPressed:(){
           }, child: Text("CANCELLED", style:TextStyleUtil.textNormal(fontSz:8))),

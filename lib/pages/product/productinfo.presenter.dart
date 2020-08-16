@@ -102,9 +102,9 @@ class ProductInfoPresenter extends CleanPresenter {
   }
   void increment(){
     cleanPageState.setState(() { 
-      if(this.quantity < this.selectedProd.stock_count){
-        this.quantity++;
-      }
+      this.quantity++;
+      // if(this.quantity < this.selectedProd.stock_count){
+      // }
     });
   }
   void decrement(){
