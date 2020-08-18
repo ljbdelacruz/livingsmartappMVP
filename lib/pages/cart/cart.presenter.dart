@@ -247,24 +247,33 @@ class CartPresenter extends CleanPresenter {
     }
   }
 
+  checkoutInit(){
+    if(!Constants.instance.isDeliveryInProgress){
+      this.checkout();
+    }else{
+      this.showSnackBar("Unable to proceed checkout delivery in progress");
+    }
+  }
+  showSnackBar(String message){
+      scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text(message),
+            ),
+      );
+  }
+
 
   checkout() async{
     try{
       var response = await customerUseCase.checkoutCart(this.storeCartId, this.defaultAddress.id, "cod");
-      scaffoldKey.currentState.showSnackBar(
-            SnackBar(
-              content: Text("Checkout Success"),
-            ),
-      );
-      NavigatorService.instance.toDashboardPR(context);
+      this.showSnackBar("Checkout Success");
+      Timer(Duration(milliseconds: 2000),(){
+        NavigatorService.instance.toDashboardPR(context);
+      });
      }on DioError catch (e) {
        switch (e.type) {
         case DioErrorType.CONNECT_TIMEOUT:
-          scaffoldKey.currentState.showSnackBar(
-            SnackBar(
-              content: Text("No Internet Connection available"),
-            ),
-          );
+          this.showSnackBar("No Internet Connection available");
           break;
         case DioErrorType.RESPONSE:
           scaffoldKey.currentState.showSnackBar(

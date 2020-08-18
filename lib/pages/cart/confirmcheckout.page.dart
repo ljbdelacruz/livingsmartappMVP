@@ -63,7 +63,11 @@ class ConfirmCheckoutPageState extends CleanPageState<CartPresenter> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children:[
       Text(presenter.selectedStore.name, style:TextStyleUtil.textBold(fontSz:14, tColor: Colors.grey)),
-      Text(presenter.selectedStore.address, style:TextStyleUtil.textNormal(fontSz:11, tColor: Colors.grey))
+      Text(presenter.selectedStore.address, style:TextStyleUtil.textNormal(fontSz:11, tColor: Colors.grey)),
+      SizedBox(height:20),
+      Text("Delivery Address:", style:TextStyleUtil.textBold(fontSz:14, tColor: Colors.grey)),
+      Text(Constants.instance.session.user.name, style:TextStyleUtil.textBold(fontSz:14, tColor: Colors.grey)),
+      Text(Constants.instance.defaultAddress.address, style:TextStyleUtil.textNormal(fontSz:11, tColor: Colors.grey)),
     ])) : CircularLoadingWidget(height:20);
   }
 
@@ -141,7 +145,7 @@ class ConfirmCheckoutPageState extends CleanPageState<CartPresenter> {
         children:[
           Text(Constants.instance.currency+presenter.calculatePrice().toString(), style:TextStyleUtil.textBold(fontSz:15)),
           OutlineButton(onPressed:(){
-            presenter.checkout();
+            presenter.checkoutInit();
           }, child: Text("CHECKOUT", style:TextStyleUtil.textNormal(fontSz:12)))
       ])
     ]));
