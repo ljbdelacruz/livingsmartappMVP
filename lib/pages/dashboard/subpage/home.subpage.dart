@@ -17,8 +17,9 @@ import 'package:livingsmart_app/services/navigator.service.dart';
 
 class HomeSubPage extends StatelessWidget {
   final NormalCallback refreshHome;
+  final NormalCallback direction;
   final HomeSubPageVM vm;
-  HomeSubPage(this.vm, this.refreshHome);
+  HomeSubPage(this.vm, this.refreshHome, this.direction);
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +81,11 @@ class HomeSubPage extends StatelessWidget {
     }else{
       vm.stores.forEach((element) { 
         // items.add(Text(element.name));
-        items.add(CardWidget((){},(){
+        items.add(CardWidget((){
+          //TODO: Direction of store
+          Constants.instance.storeDirectionSelected=element;
+          this.direction();
+        },(){
           //TODO: click
           print("Fetching store info");
           Constants.instance.selectedStoreId=element.id;

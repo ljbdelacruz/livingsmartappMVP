@@ -13,6 +13,7 @@ import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/pages/dashboard/dashboard.presenter.dart';
 import 'package:foody_ui/components/drawer/livingsmart.drawer.dart';
 import 'package:livingsmart_app/pages/dashboard/subpage/home.subpage.dart';
+import 'package:livingsmart_app/pages/dashboard/subpage/map.subpage.dart';
 import 'package:livingsmart_app/pages/dashboard/subpage/usertransactions.subpage.dart';
 import 'package:livingsmart_app/services/navigator.service.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -41,11 +42,15 @@ class DashboardPageState extends CleanPageState<DashboardPresenter> {
           return Container();
           break;
         case 1:
-          return Container();
+          // return Container();
+          return MapSubPage(MapSubPageVM(presenter.cameraPosition, presenter.allMarkers, presenter.mapController, presenter.polylines));
           break;
         case 2:
           return HomeSubPage(presenter.homeSubpage, (){
             //TODO: refresh home
+          }, (){
+            //TODO: Direction
+            presenter.showDirectionStore();
           });
           break;
         case 3:
@@ -112,7 +117,7 @@ class DashboardPageState extends CleanPageState<DashboardPresenter> {
         height:100,
         child:Column(children:[
           SizedBox(height:10),
-          Text("Processing Order from  Aleng Nena's"),
+          Text(presenter.deliveryInProgressInfo.status.toUpperCase()+" Order from "+presenter.deliveryInProgressInfo.store_name),
           Container(
             width:MediaQuery.of(context).size.width-20,
             height:40,

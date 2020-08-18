@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:clean_data/base/data_instantiator.dart';
 import 'package:clean_data/base/clean_app.dart';
 import 'package:livingsmart_app/livingsmartapp.dart';
+import 'package:livingsmart_app/services/firebase.service.dart';
 import 'pages/login/login.page.dart';
 
 void main() async {
@@ -11,12 +12,13 @@ void main() async {
   CleanDataInstantiator dataInstantiator = DataInstantiator();
   await dataInstantiator.initAppDependencies();
   ///Runs the app
+  FirebaseRemoteConfigService.instance = FirebaseRemoteConfigService();
+  
   runApp(LivingSmartApp(dataInstantiator)
-      // DevicePreview( // UNCOMMENT THIS FOR DEVICE PREVIEW
-      // builder: (context) => MyApp(),
-      // ),
   );
 }
+
+
 
 // class MyApp extends StatelessWidget {
 //   // This widget is the root of your application.

@@ -43,10 +43,18 @@ class UserTransactionsSubPage extends StatelessWidget {
                         ])), preferredSize: Size.fromHeight(100)),
                         backgroundColor: Colors.transparent,
                         body:TabBarView(children: [
-                          Container(child:pending(context)),
-                          Container(child:processing(context)),
-                          Container(child:forDelivery(context)),
-                          Container(child: completed(context)),
+                          Container(
+                            height:MediaQuery.of(context).size.height-150,
+                            child:pending(context)),
+                          Container(
+                            height:MediaQuery.of(context).size.height-150,
+                            child:processing(context)),
+                          Container(
+                            height:MediaQuery.of(context).size.height-150,
+                            child:forDelivery(context)),
+                          Container(
+                            height:MediaQuery.of(context).size.height-150,
+                            child: completed(context)),
                         ])
                       ),
     );
@@ -76,7 +84,7 @@ class UserTransactionsSubPage extends StatelessWidget {
   Widget getTransactionsList(BuildContext context, List<UserTransaction> transactions, GetIntData click){
     return transactions.length <= 0 ? CircularLoadingWidget(height: 0)  : Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height-100,
+      height: MediaQuery.of(context).size.height-150,
       child: SafeArea(
         child: SectionTableView(
           sectionCount: 1,

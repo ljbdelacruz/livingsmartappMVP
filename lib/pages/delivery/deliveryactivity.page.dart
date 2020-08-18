@@ -99,9 +99,11 @@ class DeliveryActivityPageState extends CleanPageState<DeliveryActivityPresenter
                     _buildPersonalInformationAchievements(
                         "Preparing Order Order", presenter.status >= 2 ? true : false),
                     _buildPersonalInformationAchievements(
-                        "Out for Delivery", presenter.status >= 3 ? true : false),
+                        "Order Ready For Pickup", presenter.status >= 3 ? true : false),
                     _buildPersonalInformationAchievements(
-                        "Delivered", presenter.status >= 4 ? true : false),
+                        "Out for Delivery", presenter.status >= 4 ? true : false),
+                    _buildPersonalInformationAchievements(
+                        "Delivered", presenter.status >= 5 ? true : false),
                   ],
                 ),
                 _buildCloseButton(context)

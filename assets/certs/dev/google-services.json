@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "743064780047",
+    "firebase_url": "https://livingsmart-175aa.firebaseio.com",
+    "project_id": "livingsmart-175aa",
+    "storage_bucket": "livingsmart-175aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:743064780047:android:ec14eb6054474eaf64127a",
+        "android_client_info": {
+          "package_name": "com.example.livingsmart_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "743064780047-91fesd49jndrgihl7t36qkk7opvdhlt4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqcHLbxmgyb9b6XpN5Dhuyi24cUaE8tFs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "743064780047-91fesd49jndrgihl7t36qkk7opvdhlt4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

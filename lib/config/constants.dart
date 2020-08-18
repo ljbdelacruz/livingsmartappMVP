@@ -9,6 +9,7 @@ import 'package:clean_data/model/user_session.dart';
 import 'package:clean_data/model/userstore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:livingsmart_app/services/firebase.service.dart';
 import 'package:livingsmart_app/services/map.service.dart';
 import 'package:clean_data/model/transactions.dart';
 import 'package:clean_data/model/transactions.dart';
@@ -26,6 +27,8 @@ class Constants{
   List<LSAddress> userAddresses = [];
   LSAddress defaultAddress;
   List<UserTransaction> userTransactions = [];
+  UserTransaction inProgressTransaction;
+  
 
   String cartItemHeader="";
   int cartStoreId = 0;
@@ -35,6 +38,13 @@ class Constants{
   String currency = "PHP";
   LivingSmartStoreInfo mstoreData;
   MapService mapService = new MapService();
+
+
+  LivingSmartStores storeDirectionSelected;
+
+
+  //Firebase
+  FBRemoteConfigModel fbconfig=FBRemoteConfigModel();
 
   //Driver
   String selectedJobTransCode="";

@@ -48,7 +48,6 @@ class DriverPresenter extends CleanPresenter {
     this.fetchCompleteDeliveries();
     this.fetchMyLocation();
     if(this.selectedJobTransCode.length > 0){
-      print(this.selectedJobTransCode);
       this.fetchDeliveryDetails(this.selectedJobTransCode);
     }
   }
