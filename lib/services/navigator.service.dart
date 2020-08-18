@@ -14,6 +14,7 @@ import 'package:livingsmart_app/pages/cart/cart.page.dart';
 import 'package:livingsmart_app/pages/cart/cartitems.page.dart';
 import 'package:livingsmart_app/pages/dashboard/dashboard.page.dart';
 import 'package:livingsmart_app/pages/delivery/deliveryactivity.page.dart';
+import 'package:livingsmart_app/pages/direction/mapdirection.page.dart';
 import 'package:livingsmart_app/pages/driver/driverdashboard.page.dart';
 import 'package:livingsmart_app/pages/driver/driverdirection.page.dart';
 import 'package:livingsmart_app/pages/login/login.page.dart';
@@ -46,6 +47,12 @@ class NavigatorService{
      Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => DashboardPage()));
   }
+  //Map Direction
+  toMapDirection(BuildContext context){
+    Navigator.push(context,MaterialPageRoute(builder: (context) => MapDirectionPage()));
+  }
+
+
   toRegisterPR(BuildContext context){
      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => RegisterPage()));
   }

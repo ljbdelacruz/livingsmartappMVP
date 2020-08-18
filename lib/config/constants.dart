@@ -41,6 +41,7 @@ class Constants{
 
 
   LivingSmartStores storeDirectionSelected;
+  bool isDeliveryInProgress=false;
 
 
   //Firebase

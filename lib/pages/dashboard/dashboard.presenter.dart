@@ -257,16 +257,21 @@ class DashboardPresenter extends CleanPresenter {
       Constants.instance.inProgressTransaction = Constants.instance.userTransactions.where((element) => element.status != "completed").first;
       if(Constants.instance.inProgressTransaction != null){
         this.isDeliveryInProgress=true;
+        Constants.instance.isDeliveryInProgress=true;
         this.deliveryInProgressInfo = Constants.instance.inProgressTransaction;
         this.deliveryProgress=DeliveryService.instance.getProgressStatus(deliveryInProgressInfo.status);
         FirebaseDatabaseService.instance.listenDeliveryStatus(Constants.instance.inProgressTransaction.transaction_code, (data) { 
           Constants.instance.inProgressTransaction.status=data;
           this.deliveryInProgressInfo.status=data;
           this.deliveryProgress=DeliveryService.instance.getProgressStatus(data);
+          if(data == "delivered"){
+            this.fetchUserTransactions();
+          }
           cleanPageState.setState(() {});
         });
       }else{
         this.isDeliveryInProgress=false;
+        Constants.instance.isDeliveryInProgress=false;
       }
       cleanPageState.setState(() {});
     }on DioError catch (e) {
@@ -371,10 +376,11 @@ class DashboardPresenter extends CleanPresenter {
 
   showDirectionStore(){
     if(Constants.instance.storeDirectionSelected != null){
-      this.assignUserAddressMarker(Constants.instance.mapService.currentPosition, Position(longitude:double.parse(Constants.instance.storeDirectionSelected.longitude), latitude:double.parse(Constants.instance.storeDirectionSelected.latitude)));
-      cleanPageState.setState(() {
-        this.currentTab=1;
-      });
+      NavigatorService.instance.toMapDirection(context);
+      // this.assignUserAddressMarker(Constants.instance.mapService.currentPosition, Position(longitude:double.parse(Constants.instance.storeDirectionSelected.longitude), latitude:double.parse(Constants.instance.storeDirectionSelected.latitude)));
+      // cleanPageState.setState(() {
+      //   this.currentTab=1;
+      // });
     }else{
       this.assignUserAddressMarker(Constants.instance.mapService.currentPosition, null);
     }
