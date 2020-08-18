@@ -128,12 +128,14 @@ class MStoreTransactionInfoPageState extends CleanPageState<MStoreTransactionPre
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
+                          Container(
+                            width:MediaQuery.of(context).size.width-200,
+                            child:Text(
                             item.name,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                             style: Theme.of(context).textTheme.subtitle1,
-                          ),
+                          )),
                           Text(
                             "x"+item.quantity.toString(),
                             style: TextStyleUtil.textBold(fontSz:12, tColor:Colors.grey),

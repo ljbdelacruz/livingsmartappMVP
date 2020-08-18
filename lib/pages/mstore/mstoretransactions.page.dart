@@ -42,7 +42,9 @@ class MStoreTransactionsPageState extends CleanPageState<MStoreTransactionPresen
           "Transactions",
           style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
       )),
-      body:Container(child:Column(
+      body:Container(
+        height:MediaQuery.of(context).size.height-96,
+        child:Column(
         // mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children:[
@@ -54,7 +56,7 @@ class MStoreTransactionsPageState extends CleanPageState<MStoreTransactionPresen
   Widget getTransactionsList(List<MStoreTransaction> transactions){
     return presenter.transactions.length <= 0 ? CircularLoadingWidget(height: 0)  : Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height-100,
+      height: MediaQuery.of(context).size.height-150,
       child: SafeArea(
         child: SectionTableView(
           sectionCount: 1,
@@ -153,7 +155,7 @@ class MStoreTransactionsPageState extends CleanPageState<MStoreTransactionPresen
     return Container(
       // color:Colors.red,
       width:MediaQuery.of(context).size.width,
-      height:MediaQuery.of(context).size.height/2,
+      height:MediaQuery.of(context).size.height-96,
       child:tabbedMenu());
   }
   Widget tabbedMenu(){
@@ -177,7 +179,9 @@ class MStoreTransactionsPageState extends CleanPageState<MStoreTransactionPresen
                               ])), preferredSize: Size.fromHeight(100)),
                         backgroundColor: Colors.transparent,
                         body:TabBarView(children: [
-                          Container(child:pendingTab()),
+                          Container(
+                            height:MediaQuery.of(context).size.height-150,
+                            child:pendingTab()),
                           Container(child:processingTab()),
                           Container(child:forPickupTab()),
                           Container(child:forDeliveryTab()),
