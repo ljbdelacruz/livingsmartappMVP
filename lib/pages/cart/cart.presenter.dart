@@ -20,11 +20,14 @@ class CartPresenter extends CleanPresenter {
  CustomerUseCase customerUseCase;
  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
  List<CartStore> storeCarts = [];
+ CartStore selectedStore;
  int storeIdSelected=0;
  String cartItemHeader;
  int storeCartId = 0;
  List<CartStoreItem> cartStoreItems = [];
  LSAddress defaultAddress=Constants.instance.defaultAddress;
+
+ String selectedPaymentMethod="Cash On Delivery";
 
 
  CartPresenter(CleanPageState<CleanPresenter> cleanPageState)
@@ -39,8 +42,16 @@ class CartPresenter extends CleanPresenter {
     this.storeCartId=Constants.instance.cartStoreId;
     if(this.cartItemHeader.length > 0){
       this.fetchStoreCartItems();
+      this.fetchStoreInfo();
     }
     this.fetchStoreCart();
+  }
+
+  fetchStoreInfo(){
+    print("selected store id");
+    print(storeCartId);
+    this.selectedStore=this.storeCarts.where((element) => element.id == storeCartId).first;
+    print(selectedStore.name);
   }
   fetchStoreCart() async{
     try{
@@ -198,7 +209,8 @@ class CartPresenter extends CleanPresenter {
       print(this.storeCartId.toString()+" "+element.id.toString()+" "+element.quantity.toString());
       this.addItem(this.storeCartId, element.id, element.quantity);
     });
-    this.checkout();
+    NavigatorService.instance.toConfirmCheckout(context);
+    // this.checkout();
   }
   addItem(int storeId, int prodId, int quantity) async{
      try{
@@ -238,7 +250,7 @@ class CartPresenter extends CleanPresenter {
 
   checkout() async{
     try{
-      var response = await customerUseCase.checkoutCart(this.storeCartId, this.defaultAddress.id);
+      var response = await customerUseCase.checkoutCart(this.storeCartId, this.defaultAddress.id, "cod");
       scaffoldKey.currentState.showSnackBar(
             SnackBar(
               content: Text("Checkout Success"),
@@ -282,6 +294,9 @@ class CartPresenter extends CleanPresenter {
         total+=(double.parse(element.price) * element.quantity.toDouble()); 
       }
     });
+    if(storeIdSelected != null){
+      total+=double.parse(selectedStore.delivery_fee);
+    }
     return total;
   }
 

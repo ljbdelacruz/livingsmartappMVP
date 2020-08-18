@@ -12,6 +12,7 @@ import 'package:livingsmart_app/pages/address/deliveryaddress.page.dart';
 import 'package:livingsmart_app/pages/address/selectaddress.page.dart';
 import 'package:livingsmart_app/pages/cart/cart.page.dart';
 import 'package:livingsmart_app/pages/cart/cartitems.page.dart';
+import 'package:livingsmart_app/pages/cart/confirmcheckout.page.dart';
 import 'package:livingsmart_app/pages/dashboard/dashboard.page.dart';
 import 'package:livingsmart_app/pages/delivery/deliveryactivity.page.dart';
 import 'package:livingsmart_app/pages/direction/mapdirection.page.dart';
@@ -113,6 +114,10 @@ class NavigatorService{
      }else{
        Navigator.push(context,MaterialPageRoute(builder: (context) => CartItemPage()));
      }
+  }
+
+  toConfirmCheckout(BuildContext context){
+    Navigator.push(context,MaterialPageRoute(builder: (context) => ConfirmCheckoutPage()));
   }
 
   //Product Info

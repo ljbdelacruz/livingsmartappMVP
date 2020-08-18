@@ -90,7 +90,7 @@ class HomeSubPage extends StatelessWidget {
           print("Fetching store info");
           Constants.instance.selectedStoreId=element.id;
           NavigatorService.instance.toStoreInfo(context);
-        }, vm:CardWidgetVM(element.id.toString(), "1 km", title:element.name, subtitle:element.description != "" ? element.description : "", image: element.image != "null" ? Constants.instance.baseURL+element.image : Constants.instance.noImageDefault, loaderPlaceholder: "assets/images/loader/loading.gif", review:element.rate != "" ? element.rate : "0.0", )));
+        }, vm:CardWidgetVM(element.id.toString(), "1 km", title:element.name, subtitle:element.description != "" ? element.description : "", image: element.image != "null" ? Constants.instance.baseURL+element.image : Constants.instance.noImageDefault, loaderPlaceholder: "assets/images/loader/loading.gif", review:element.rate != "" ? element.rate : "0.0", openS: element.closed == 0 ? "Open" : "Closed", pickupS: element.delivery == 0 ? "Pickup" : "Delivery" )));
       });
       if(items.length > 0){
         return SingleChildScrollView(scrollDirection: Axis.horizontal, child:Row(
