@@ -63,6 +63,7 @@ class TransactionInfoPresenter extends CleanPresenter {
     if(this.transactionInfo != null){
       billing+=subtotal;
       billing+=double.parse(this.transactionInfo.details.delivery_fee);
+      billing+=double.parse(this.transactionInfo.details.admin_commission);
       return billing;
     }else{
       return 0;

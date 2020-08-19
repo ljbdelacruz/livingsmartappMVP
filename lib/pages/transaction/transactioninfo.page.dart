@@ -88,7 +88,11 @@ class TransactionInfoPageState extends CleanPageState<TransactionInfoPresenter> 
   Widget feeInfo(){
     return presenter.transactionInfo != null ? Container(
       padding:EdgeInsets.only(left:30, right:30),
-      child: Column(children:[
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:[
+      Text(presenter.transactionInfo.details.payment_type == "cod" ? "Cash On Delivery" : "Others", style:TextStyleUtil.textBold(fontSz:15, tColor:Colors.grey)),
+      SizedBox(height:20),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children:[
@@ -100,6 +104,12 @@ class TransactionInfoPageState extends CleanPageState<TransactionInfoPresenter> 
         children:[
         Text("Delivery Fee:"),
         Text(Constants.instance.currency+" "+presenter.transactionInfo.details.delivery_fee),
+      ]),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children:[
+        Text("Admin Commission:"),
+        Text(Constants.instance.currency+" "+presenter.transactionInfo.details.admin_commission),
       ])
     ])) : Container();
   }
