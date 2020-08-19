@@ -28,6 +28,7 @@ class Constants{
   LSAddress defaultAddress;
   List<UserTransaction> userTransactions = [];
   UserTransaction inProgressTransaction;
+  String selectedUserTransaction;
   
 
   String cartItemHeader="";

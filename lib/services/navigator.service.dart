@@ -29,6 +29,7 @@ import 'package:livingsmart_app/pages/product/storeinfo.page.dart';
 import 'package:livingsmart_app/pages/register/forgot.page.dart';
 import 'package:livingsmart_app/pages/register/register.page.dart';
 import 'package:livingsmart_app/pages/settings/settings.page.dart';
+import 'package:livingsmart_app/pages/transaction/transactioninfo.page.dart';
 
 class NavigatorService{
 
@@ -51,6 +52,9 @@ class NavigatorService{
   //Map Direction
   toMapDirection(BuildContext context){
     Navigator.push(context,MaterialPageRoute(builder: (context) => MapDirectionPage()));
+  }
+  toTransactionInfo(BuildContext context){
+    Navigator.push(context,MaterialPageRoute(builder: (context) => TransactionInfoPage()));
   }
 
 

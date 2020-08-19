@@ -43,6 +43,7 @@ class DashboardPresenter extends CleanPresenter {
 
   bool isDeliveryInProgress=false;
   UserTransaction deliveryInProgressInfo;
+  
 
   double deliveryProgress=0.01;
   DashboardPresenter(CleanPageState<CleanPresenter> cleanPageState)
@@ -189,6 +190,10 @@ class DashboardPresenter extends CleanPresenter {
       case 1:
         break;
       case 2:
+        Navigator.pop(context);
+        cleanPageState.setState(() {
+          currentTab=3;
+        });
         break;
       case 3:
         break;
@@ -302,34 +307,36 @@ class DashboardPresenter extends CleanPresenter {
   }
 
   fetchTransactionInfo(String transCode) async{
-    try{
-      var data = await customerUseCase.getTransactionContent(transCode);
-      //view transaction info data
-    }on DioError catch (e) {
-       switch (e.type) {
-        case DioErrorType.CONNECT_TIMEOUT:
-          scaffoldKey.currentState.showSnackBar(
-            SnackBar(
-              content: Text("No Internet Connection available"),
-            ),
-          );
-          break;
-        case DioErrorType.RESPONSE:
-          scaffoldKey.currentState.showSnackBar(
-            SnackBar(
-              content: Text("Failed transaction info"),
-            ),
-          );
-          break;
-        default:
-          scaffoldKey.currentState.showSnackBar(
-            SnackBar(
-              content: Text("Unable to process this request at this time"),
-            ),
-          );
-          break;
-      }
-    }
+    Constants.instance.selectedUserTransaction = transCode;
+    NavigatorService.instance.toTransactionInfo(context);
+    // try{
+    //   var data = await customerUseCase.getTransactionContent(transCode);
+    //   //view transaction info data
+    // }on DioError catch (e) {
+    //    switch (e.type) {
+    //     case DioErrorType.CONNECT_TIMEOUT:
+    //       scaffoldKey.currentState.showSnackBar(
+    //         SnackBar(
+    //           content: Text("No Internet Connection available"),
+    //         ),
+    //       );
+    //       break;
+    //     case DioErrorType.RESPONSE:
+    //       scaffoldKey.currentState.showSnackBar(
+    //         SnackBar(
+    //           content: Text("Failed transaction info"),
+    //         ),
+    //       );
+    //       break;
+    //     default:
+    //       scaffoldKey.currentState.showSnackBar(
+    //         SnackBar(
+    //           content: Text("Unable to process this request at this time"),
+    //         ),
+    //       );
+    //       break;
+    //   }
+    
   }
 
   logout() async{
