@@ -215,9 +215,7 @@ class DriverPresenter extends CleanPresenter {
 
   acceptDelivery(String transCode) async{
     try{
-      print("Accepting delivery "+transCode);
       var response = await mcsRiderUseCase.riderAcceptDelivery(transCode, 0, 0);
-      print(response.data.toString());
       if(response != null){
         scaffoldKey.currentState.showSnackBar(
               SnackBar(
