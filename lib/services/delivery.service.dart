@@ -16,7 +16,7 @@ class DeliveryService{
       case "for delivery":
         return 0.8;
       case "delivered":
-        return 0.8;
+        return 1;
       default:
         return 0.0;
     }

@@ -27,7 +27,7 @@ class UserTransactionsSubPage extends StatelessWidget {
     return Container(
       // color:Colors.red,
       width:MediaQuery.of(context).size.width,
-      height:MediaQuery.of(context).size.height/2,
+      height: MediaQuery.of(context).size.height-282,
       child:tabbedMenu(context));
   }
   Widget tabbedMenu(BuildContext context){

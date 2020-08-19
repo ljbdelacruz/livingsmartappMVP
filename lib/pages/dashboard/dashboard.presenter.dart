@@ -240,7 +240,7 @@ class DashboardPresenter extends CleanPresenter {
     try{
       Constants.instance.userTransactions = await customerUseCase.getTransactions();
       //TODO: extract in progress order
-      Constants.instance.inProgressTransaction = Constants.instance.userTransactions.where((element) => element.status != "completed").first;
+      Constants.instance.inProgressTransaction = Constants.instance.userTransactions.where((element) => element.status != "delivered").first;
       if(Constants.instance.inProgressTransaction != null){
         this.isDeliveryInProgress=true;
         Constants.instance.isDeliveryInProgress=true;
@@ -251,15 +251,17 @@ class DashboardPresenter extends CleanPresenter {
           this.deliveryInProgressInfo.status=data;
           this.deliveryProgress=DeliveryService.instance.getProgressStatus(data);
           if(data == "delivered"){
-            this.fetchUserTransactions();
+            // this.fetchUserTransactions();
+            this.isDeliveryInProgress=false;
+            Constants.instance.isDeliveryInProgress=false;
           }
           cleanPageState.setState(() {});
         });
       }else{
         this.isDeliveryInProgress=false;
         Constants.instance.isDeliveryInProgress=false;
+        cleanPageState.setState(() {});
       }
-      cleanPageState.setState(() {});
     }on DioError catch (e) {
        switch (e.type) {
         case DioErrorType.CONNECT_TIMEOUT:
