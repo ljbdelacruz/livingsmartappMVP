@@ -300,12 +300,15 @@ class DriverPresenter extends CleanPresenter {
     }
   }
   showDirectionStore(String transCode){
-      var pos = Constants.instance.mapService.currentPosition;
-      URLService.launchMapsUrl(pos.latitude, pos.longitude, this.currentDeliveryInfo.details.store_latitude, this.currentDeliveryInfo.details.store_longitude);
+      URLService.launchWazeDirection(this.currentDeliveryInfo.details.store_latitude, this.currentDeliveryInfo.details.store_longitude);
+      // var pos = Constants.instance.mapService.currentPosition;
+      // URLService.launchMapsUrl(pos.latitude, pos.longitude, this.currentDeliveryInfo.details.store_latitude, this.currentDeliveryInfo.details.store_longitude);
   }
   showDirectionCustomer(String transCode){
-      var pos = Constants.instance.mapService.currentPosition;
-      URLService.launchMapsUrl(pos.latitude, pos.longitude, this.currentDeliveryInfo.details.customer_latitude, this.currentDeliveryInfo.details.customer_longitude);
+      URLService.launchWazeDirection(this.currentDeliveryInfo.details.customer_latitude, this.currentDeliveryInfo.details.customer_longitude);
+
+      // var pos = Constants.instance.mapService.currentPosition;
+      // URLService.launchMapsUrl(pos.latitude, pos.longitude, this.currentDeliveryInfo.details.customer_latitude, this.currentDeliveryInfo.details.customer_longitude);
   }
 
 

@@ -9,7 +9,7 @@ class URLService{
       sourceLatitude,
       sourceLongitude,
       destinationLatitude,
-      destinationLongitude, {dest1Lat, dest2Lon}) async {
+      destinationLongitude) async {
     String mapOptions = [
       'saddr=$sourceLatitude,$sourceLongitude',
       'daddr=$destinationLatitude,$destinationLongitude',
@@ -21,5 +21,18 @@ class URLService{
       await launch(url);
     } else {
       throw 'Could not launch $url';
-    }  }
+    }  
+  }
+  static void launchWazeDirection(
+      destinationLatitude,
+      destinationLongitude) async{
+
+    final url = 'https://www.waze.com/ul?ll=$destinationLatitude%2C$destinationLongitude&navigate=yes&zoom=17';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }  
+  }
+
 }
