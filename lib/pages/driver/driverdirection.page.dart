@@ -82,7 +82,7 @@ class DriverDirectionPageState extends CleanPageState<DriverPresenter> {
         Text(presenter.currentDeliveryInfo.details.store_name),
         Text(presenter.currentDeliveryInfo.details.store_phone)
       ]),
-      Text(presenter.currentDeliveryInfo.details.customer_address),
+      Text(presenter.currentDeliveryInfo.details.store_address),
       SizedBox(height:20),
       Text("Drop off:", style:TextStyleUtil.textBold(fontSz:15, tColor: Colors.grey)),
       Row(children:[

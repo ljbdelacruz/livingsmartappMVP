@@ -11,6 +11,7 @@ import 'package:livingsmart_app/pages/driver/driver.presenter.dart';
 import 'package:livingsmart_app/pages/driver/subpage/driverhome.subpage.dart';
 import 'package:livingsmart_app/pages/driver/subpage/joblist.subpage.dart';
 import 'package:livingsmart_app/services/navigator.service.dart';
+import 'package:livingsmart_app/services/url.service.dart';
 
 class DriverDashboardPage extends CleanPage {
 
@@ -60,6 +61,10 @@ class DriverDashboardPageState extends CleanPageState<DriverPresenter> {
           }, (String transCode){
             //TODO: delivered job
             presenter.deliveredJob(transCode);
+          }, (String transCode){
+            presenter.showDirectionStore(transCode);
+          }, (String transCode){
+            presenter.showDirectionCustomer(transCode);
           });
     }
     return Column(children:[

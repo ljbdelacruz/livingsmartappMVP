@@ -15,8 +15,10 @@ class JobListSubPage extends StatelessWidget {
   final GetStringData viewInfo;
   final GetStringData acceptjob;
   final GetStringData deliveredJob;
+  final GetStringData pickupDirection;
+  final GetStringData deliveryDirection;
 
-  JobListSubPage(this.vm, this.viewInfo, this.acceptjob, this.deliveredJob);
+  JobListSubPage(this.vm, this.viewInfo, this.acceptjob, this.deliveredJob, this.pickupDirection, this.deliveryDirection);
 
   @override
   Widget build(BuildContext context) {
@@ -105,14 +107,23 @@ class JobListSubPage extends StatelessWidget {
         Container(
           // width:MediaQuery.of(context).size.width-250,
           child:Text(vm.currentDeliveryInfo.products.length.toString()+" Items", style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey))),
-          OutlineButton(onPressed:(){
-            this.viewInfo(vm.currentDeliveryInfo.details.transaction_code);
-          }, child: Text("INFO", style:TextStyleUtil.textNormal(fontSz:8))),
-          OutlineButton(onPressed:(){
-            deliveredJob(vm.currentDeliveryInfo.details.transaction_code);
-          }, child: Text("DELIVERED", style:TextStyleUtil.textNormal(fontSz:8))),
-          OutlineButton(onPressed:(){
-          }, child: Text("CANCELLED", style:TextStyleUtil.textNormal(fontSz:8))),
+
+          Column(children:[
+            OutlineButton(onPressed:(){
+              this.viewInfo(vm.currentDeliveryInfo.details.transaction_code);
+            }, child: Text("INFO", style:TextStyleUtil.textNormal(fontSz:8))),
+            OutlineButton(onPressed:(){
+              deliveredJob(vm.currentDeliveryInfo.details.transaction_code);
+            }, child: Text("DELIVERED", style:TextStyleUtil.textNormal(fontSz:8))),
+            OutlineButton(onPressed:(){
+            }, child: Text("CANCELLED", style:TextStyleUtil.textNormal(fontSz:8))),
+            OutlineButton(onPressed:(){
+              this.pickupDirection(vm.currentDeliveryInfo.details.transaction_code);
+            }, child: Text("Pickup DIRECTION", style:TextStyleUtil.textNormal(fontSz:8))),
+            OutlineButton(onPressed:(){
+              this.deliveryDirection(vm.currentDeliveryInfo.details.transaction_code);
+            }, child: Text("Delivery DIRECTION", style:TextStyleUtil.textNormal(fontSz:8))),
+          ])
       ]),
     ])) : Container(child:Text("No Delivery In Progress"));
   }

@@ -16,6 +16,7 @@ import 'package:get_it/get_it.dart';
 import 'package:clean_data/model/delivery.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:livingsmart_app/config/constants.dart';
+import 'package:livingsmart_app/services/url.service.dart';
 
 
 class DriverPresenter extends CleanPresenter {
@@ -84,6 +85,8 @@ class DriverPresenter extends CleanPresenter {
   fetchAvailableJobs() async{
     try{
       this.jobList = await mcsRiderUseCase.listAvailableDeliveries();
+      print("Jobs count");
+      print(this.jobList.length.toString());
       if(this.jobList.length <= 0){
         this.fetchCurrentDelivery();
       }
@@ -296,6 +299,15 @@ class DriverPresenter extends CleanPresenter {
       }
     }
   }
+  showDirectionStore(String transCode){
+      var pos = Constants.instance.mapService.currentPosition;
+      URLService.launchMapsUrl(pos.latitude, pos.longitude, this.currentDeliveryInfo.details.store_latitude, this.currentDeliveryInfo.details.store_longitude);
+  }
+  showDirectionCustomer(String transCode){
+      var pos = Constants.instance.mapService.currentPosition;
+      URLService.launchMapsUrl(pos.latitude, pos.longitude, this.currentDeliveryInfo.details.customer_latitude, this.currentDeliveryInfo.details.customer_longitude);
+  }
+
 
 
 
