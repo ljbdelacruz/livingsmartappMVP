@@ -32,18 +32,24 @@ class LoginPresenter extends CleanPresenter {
     // this.password.text="12345678";
 
     //Driver
-    // this.email.text="00000000003";
-    // this.password.text="12345678";
+    this.email.text="00000000003";
+    this.password.text="12345678";
 
     //User
-    this.email.text="09493169481";
-    this.password.text="12345678";
+    // this.email.text="09493169481";
+    // this.password.text="12345678";
   }
   void mobileLogin() async{
     try {
       Constants.instance.session = await userAuthUseCase.mobileLogin(email.text, password.text, true);
       if(Constants.instance.session != null){
-        NavigatorService.instance.toDashboardPR(context);
+        if(Constants.instance.session.user.role == "mstore"){
+          NavigatorService.instance.toMStore(context);
+        }else if(Constants.instance.session.user.role == "rider"){
+          NavigatorService.instance.toDriverDashboard(context);
+        }else{
+          NavigatorService.instance.toDashboardPR(context);
+        }
       }
     }on DioError catch (e) {
        switch (e.type) {

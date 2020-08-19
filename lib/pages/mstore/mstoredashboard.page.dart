@@ -12,6 +12,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_section_table_view/flutter_section_table_view.dart';
 import 'package:foody_ui/components/header/tabbed1.header.dart';
+import 'package:foody_ui/components/progress/circularloading.progress.dart';
 import 'package:foody_ui/util/text_style_util.dart';
 import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/pages/mstore/mstoredashboard.presenter.dart';
@@ -76,7 +77,7 @@ class MStoreDashboardPageState extends CleanPageState<MStoreDashboardPresenter> 
 
         ],
       ),
-      body:Container(child:Column(
+      body: presenter.storeInfo != null ? Container(child:Column(
         // mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children:[
@@ -85,7 +86,7 @@ class MStoreDashboardPageState extends CleanPageState<MStoreDashboardPresenter> 
           child:Text(presenter.storeName, style:TextStyleUtil.textNormal(fontSz:20, tColor:Colors.grey))),
         tabbedOptions(),
         transactionHist(),
-      ]))
+      ])) : CircularLoadingWidget(height:30),
     );
   }
 
@@ -182,11 +183,11 @@ class MStoreDashboardPageState extends CleanPageState<MStoreDashboardPresenter> 
 
 
   Widget inventoryTab(){
-    if(Constants.instance.mstoreData.products.length > 0){
+    if(presenter.storeInfo.products.length > 0){
       return Container(child: SectionTableView(
             sectionCount: 1,
             numOfRowInSection: (section) {
-              return Constants.instance.mstoreData.products.length;
+              return presenter.storeInfo.products.length;
             },
             cellAtIndexPath: (section, row) {
               var item = Constants.instance.globalItems[row];

@@ -25,6 +25,7 @@ import 'package:livingsmart_app/services/firebasedatabase.service.dart';
 import 'package:livingsmart_app/services/navigator.service.dart';
 import 'package:clean_data/usecase/customer_use_case.dart';
 import 'package:clean_data/model/userstore.dart';
+import 'package:livingsmart_app/services/snackbar.service.dart';
 
 
 class DashboardPresenter extends CleanPresenter {
@@ -60,8 +61,8 @@ class DashboardPresenter extends CleanPresenter {
 
     if(Constants.instance.session != null){
       drawerVM = LivingSmartDrawerVM(name: Constants.instance.session.user.name, email: Constants.instance.session.user.email, appVersion: Constants.instance.appVersion, 
-      showMStore: Constants.instance.session.user.role == "mstore" ? true : false, 
-      showMCS: Constants.instance.session.user.role == "rider" ? true : false
+      showMStore: false, 
+      showMCS: false
       );
       this.fetchDefaultDeliveryAddress();
       this.fetchUserDeliveryAddress();
@@ -70,15 +71,9 @@ class DashboardPresenter extends CleanPresenter {
     }
     this.fetchStoreList();
     if(Constants.instance.session != null){
-      if(Constants.instance.session.user.role == "mstore"){
-          this.getMstoreData();
-      }
       this.fetchUserTransactions();
     }
-    Constants.instance.mapService.getCurrentLocation((){
-      this.getAddress();
-      // NavigatorService.instance.toDeliveryInfo(context);
-    });
+    this.getAddress();
   }
 
   fetchDefaultDeliveryAddress() async{
@@ -141,12 +136,10 @@ class DashboardPresenter extends CleanPresenter {
     }
   }
   getAddress(){
-    if(Constants.instance.mapService.currentPosition != null){
       Constants.instance.mapService.getAddressStringByPosition(Constants.instance.mapService.currentPosition, (address){
         homeSubpage.address=address;
         cleanPageState.setState(() {});
       });
-    }
   }
 
   getMstoreData() async{
@@ -155,25 +148,13 @@ class DashboardPresenter extends CleanPresenter {
     }on DioError catch (e) {
        switch (e.type) {
         case DioErrorType.CONNECT_TIMEOUT:
-          scaffoldKey.currentState.showSnackBar(
-            SnackBar(
-              content: Text("No Internet Connection available"),
-            ),
-          );
+          SnackBarService.textSnack(scaffoldKey, "No Internet Connection available");
           break;
         case DioErrorType.RESPONSE:
-          scaffoldKey.currentState.showSnackBar(
-            SnackBar(
-              content: Text("Unable to fetch MStore data"),
-            ),
-          );
+          SnackBarService.textSnack(scaffoldKey, "Unable to fetch MStore data");
           break;
         default:
-          scaffoldKey.currentState.showSnackBar(
-            SnackBar(
-              content: Text("Unable to process this request at this time"),
-            ),
-          );
+          SnackBarService.textSnack(scaffoldKey, "Unable to process this request at this time");
           break;
       }
     }

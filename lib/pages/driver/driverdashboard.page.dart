@@ -34,7 +34,7 @@ class DriverDashboardPageState extends CleanPageState<DriverPresenter> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          "MCS Dashboard",
+          "Rider Dashboard",
           style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         )
       ),

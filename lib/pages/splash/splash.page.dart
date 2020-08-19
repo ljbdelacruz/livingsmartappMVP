@@ -17,6 +17,7 @@ class _SplashPageState extends CleanPageState<SplashPresenter> {
   SplashPresenter createPresenter() {
     return SplashPresenter(this);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
