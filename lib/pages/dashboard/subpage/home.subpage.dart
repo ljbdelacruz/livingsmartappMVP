@@ -10,6 +10,7 @@ import 'package:foody_ui/services/color.service.dart';
 import 'package:foody_ui/subui/loader.subui.dart';
 import 'package:foody_ui/subui/tableviewcells.subui.dart';
 import 'package:foody_ui/typdef/mytypedef.dart';
+import 'package:livingsmart_app/components/widgets.ui.dart';
 import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/services/navigator.service.dart';
 
@@ -34,6 +35,12 @@ class HomeSubPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
+
+              Container(
+                padding:EdgeInsets.only(left:30, right:30, top:10),
+                child:WidgetUI.instance.clickableTextField((){
+                  NavigatorService.instance.toSearchProduct(context);
+              }, (){}, hintText:"Product Search")),
               Padding(
                 padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
                 child: ListTile(
@@ -62,6 +69,7 @@ class HomeSubPage extends StatelessWidget {
                   ),
                 ),
               ),
+
               storeList(context),
               //TODO: List of Living Smart Data
               // CardsCarouselWidget(restaurantsList: _con.topRestaurants, heroTag: 'home_top_restaurants'),

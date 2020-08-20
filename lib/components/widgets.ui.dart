@@ -5,6 +5,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:foody_ui/typdef/mytypedef.dart';
 import 'package:foody_ui/util/text_style_util.dart';
 
 class WidgetUI{
@@ -53,6 +54,51 @@ class WidgetUI{
                 Text("x"+qty, style:TextStyleUtil.textNormal(fontSz:12, tColor: Colors.grey)),
             ])
     ]);
+  }
+
+
+  Widget clickableTextField(NormalCallback click, NormalCallback iconClick,{Color unColor = Colors.red, Color tColor = Colors.grey, String hintText=""}){
+    return InkWell(
+      onTap: () {
+        // Navigator.of(context).push(SearchModal());
+        click();
+      },
+      child: Container(
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+            color: Colors.transparent,
+            border: Border.all(
+              color: unColor,
+            ),
+            borderRadius: BorderRadius.circular(4)),
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 12, left: 0),
+              child: Icon(Icons.search, color: tColor),
+            ),
+            Expanded(
+              child: Text(
+                hintText,
+                maxLines: 1,
+                style: TextStyleUtil.textNormal(fontSz:12, tColor: tColor),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                // onClickFilter('e');
+                iconClick();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5, left: 5, top: 3, bottom: 3),
+                child: Icon(Icons.filter_list, color: tColor,
+              ),
+            )
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
 
