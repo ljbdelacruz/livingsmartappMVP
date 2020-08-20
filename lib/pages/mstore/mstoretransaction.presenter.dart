@@ -207,6 +207,21 @@ class MStoreTransactionPresenter extends CleanPresenter {
   List<MStoreTransaction> filterByStatus(String status){
     return this.transactions.where((element) => element.status == status).toList();
   }
+  double calculateItemPrice(MStoreTransactionItem item){
+    return item.quantity.toDouble() * double.parse(item.price);
+  }
+
+  double calculateTotalBill(){
+    double bill = 0;
+    if(this.selectedTransaction != null){
+      this.selectedTransaction.products.forEach((element) { 
+        bill+=(element.quantity.toDouble() * double.parse(element.price));
+      });
+      return bill;
+    }else{
+      return 0;
+    }
+  }
 
   @override
   // TODO: implement streamControllers

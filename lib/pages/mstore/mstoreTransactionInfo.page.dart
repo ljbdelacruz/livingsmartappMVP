@@ -10,6 +10,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_section_table_view/flutter_section_table_view.dart';
 import 'package:foody_ui/components/progress/circularloading.progress.dart';
+import 'package:foody_ui/services/color.service.dart';
 import 'package:foody_ui/util/text_style_util.dart';
 import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/pages/mstore/mstoretransaction.presenter.dart';
@@ -41,7 +42,8 @@ class MStoreTransactionInfoPageState extends CleanPageState<MStoreTransactionPre
           "Transaction Info",
           style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
       )),
-      body:bodyContent()
+      body: presenter.selectedTransaction == null ? CircularLoadingWidget(height: 0) : bodyContent(),
+      bottomNavigationBar: totalPrice(),
       )
     );
   }
@@ -66,7 +68,7 @@ class MStoreTransactionInfoPageState extends CleanPageState<MStoreTransactionPre
   }
 
   Widget products(){
-    return SectionTableView(
+    return presenter.selectedTransaction.products != null ? SectionTableView(
           sectionCount: 1,
           numOfRowInSection: (section) {
             return presenter.selectedTransaction.products.length;
@@ -80,7 +82,7 @@ class MStoreTransactionInfoPageState extends CleanPageState<MStoreTransactionPre
             color: Colors.grey,
             height: 1.0,
           ),
-        );
+        ) : CircularLoadingWidget(height: 40);
   }
   Widget productsCell(MStoreTransactionItem item, String loadingGif){
     return InkWell(
@@ -129,17 +131,23 @@ class MStoreTransactionInfoPageState extends CleanPageState<MStoreTransactionPre
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Container(
-                            width:MediaQuery.of(context).size.width-200,
+                            width:MediaQuery.of(context).size.width-250,
                             child:Text(
                             item.name,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                             style: Theme.of(context).textTheme.subtitle1,
                           )),
-                          Text(
-                            "x"+item.quantity.toString(),
-                            style: TextStyleUtil.textBold(fontSz:12, tColor:Colors.grey),
-                          ),
+                          Column(children:[
+                            Text(
+                              Constants.instance.currency+presenter.calculateItemPrice(item).toString(),
+                              style: TextStyleUtil.textBold(fontSz:12, tColor:Colors.grey),
+                            ),
+                            Text(
+                              "x"+item.quantity.toString(),
+                              style: TextStyleUtil.textBold(fontSz:12, tColor:Colors.grey),
+                            ),
+                          ])
 
                         ],
                       ),
@@ -152,6 +160,18 @@ class MStoreTransactionInfoPageState extends CleanPageState<MStoreTransactionPre
           ),
         ),
       );
+  }
+
+
+  Widget totalPrice(){
+    return Container(
+      padding:EdgeInsets.only(left:20),
+      color:ColorsService.instance.primaryColor(),
+      width:MediaQuery.of(context).size.width, 
+      height:100,
+      child:Row(children:[
+        Text("Total Amount: "+Constants.instance.currency+" "+presenter.calculateTotalBill().toString(), style:TextStyleUtil.textBold(fontSz:12, tColor:Colors.grey))
+      ]));
   }
 
 

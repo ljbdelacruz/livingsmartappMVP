@@ -10,6 +10,7 @@ import 'package:foody_ui/components/header/tabbed1.header.dart';
 import 'package:foody_ui/components/progress/circularloading.progress.dart';
 import 'package:foody_ui/typdef/mytypedef.dart';
 import 'package:foody_ui/util/text_style_util.dart';
+import 'package:livingsmart_app/config/constants.dart';
 
 class UserTransactionsSubPage extends StatelessWidget {
   final UserTransactionsSubPageVM vm;
@@ -27,7 +28,7 @@ class UserTransactionsSubPage extends StatelessWidget {
     return Container(
       // color:Colors.red,
       width:MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height-282,
+      height: Constants.instance.isDeliveryInProgress ? MediaQuery.of(context).size.height-282 : MediaQuery.of(context).size.height-250,
       child:tabbedMenu(context));
   }
   Widget tabbedMenu(BuildContext context){

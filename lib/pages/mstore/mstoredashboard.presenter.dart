@@ -89,6 +89,7 @@ class MStoreDashboardPresenter extends CleanPresenter {
     }
   }
 
+
   @override
   // TODO: implement streamControllers
   List<StreamController> get streamControllers => null;
