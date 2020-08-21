@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/services/navigator.service.dart';
+import 'package:livingsmart_app/services/snackbar.service.dart';
 
 class CartPresenter extends CleanPresenter {
  CustomerUseCase customerUseCase;
@@ -89,8 +90,8 @@ class CartPresenter extends CleanPresenter {
   removeStoreCart(int index, int storeId) async{
     try{
       var response = await customerUseCase.deleteCart(storeId);
-      print(response.data.toString());
       this.storeCarts.removeAt(index);
+      SnackBarService.textSnack(scaffoldKey, "Product Removed from Cart!");
       cleanPageState.setState(() {});
     }on DioError catch (e) {
        switch (e.type) {
@@ -152,6 +153,7 @@ class CartPresenter extends CleanPresenter {
   increment(CartStoreItem item){
     cleanPageState.setState((){
       item.quantity++;
+      print(item.stock_count.toString());
       // if(item.quantity < item.stock_count){
       // }
     });

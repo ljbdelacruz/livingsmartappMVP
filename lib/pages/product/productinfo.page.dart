@@ -83,85 +83,81 @@ class ProductInfoPageState extends CleanPageState<ProductInfoPresenter> {
   Widget bottomNav(){
     if(presenter.selectedProd != null){
 
-    return Container(
-      width:MediaQuery.of(context).size.width,
-      height:200,
-      child:Row(children:[
-      // addToCart(),
-        Container(
-                      height: 150,
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-                          boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), offset: Offset(0, -2), blurRadius: 5.0)]),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width - 40,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Row(
+    if(presenter.selectedProd.stock_count <= 0){
+      return Container(
+        width:MediaQuery.of(context).size.width,
+        height:150,
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+        boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), offset: Offset(0, -2), blurRadius: 5.0)]),
+        child:Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children:[
+          Text("Out of Stock", style:TextStyleUtil.textBold(fontSz:20, tColor: Colors.red))
+        ]));
+    }else{
+      return Container(
+          width:MediaQuery.of(context).size.width,
+          height:200,
+          child:Row(children:[
+            Container(
+                          height: 150,
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+                              boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), offset: Offset(0, -2), blurRadius: 5.0)]),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 40,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
                               children: <Widget>[
-                                Expanded(
-                                  child: Text(
-                                    "Quantity",
-                                    style: Theme.of(context).textTheme.subtitle1,
-                                  ),
-                                ),
                                 Row(
-                                  mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
-                                    IconButton(
-                                      onPressed: () {
-                                        presenter.decrement();
-                                      },
-                                      iconSize: 30,
-                                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                                      icon: Icon(Icons.remove_circle_outline),
-                                      color: Theme.of(context).hintColor,
+                                    Expanded(
+                                      child: Text(
+                                        "Quantity",
+                                        style: Theme.of(context).textTheme.subtitle1,
+                                      ),
                                     ),
-                                    Text(presenter.quantity.toString(), style: Theme.of(context).textTheme.subtitle1),
-                                    IconButton(
-                                      onPressed: () {
-                                        presenter.increment();
-                                      },
-                                      iconSize: 30,
-                                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                                      icon: Icon(Icons.add_circle_outline),
-                                      color: Theme.of(context).hintColor,
-                                    )
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        IconButton(
+                                          onPressed: () {
+                                            presenter.decrement();
+                                          },
+                                          iconSize: 30,
+                                          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                                          icon: Icon(Icons.remove_circle_outline),
+                                          color: Theme.of(context).hintColor,
+                                        ),
+                                        Text(presenter.quantity.toString(), style: Theme.of(context).textTheme.subtitle1),
+                                        IconButton(
+                                          onPressed: () {
+                                            presenter.increment();
+                                          },
+                                          iconSize: 30,
+                                          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                                          icon: Icon(Icons.add_circle_outline),
+                                          color: Theme.of(context).hintColor,
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 ),
-                              ],
-                            ),
-                            SizedBox(height:20),
-                            addToCart()
-                          ]),
-                    ))
-    ]));
+                                SizedBox(height:20),
+                                addToCart()
+                              ]),
+                        ))
+            ]));
 
+        }
 
-    // if(presenter.selectedProd.stock_count <= 0){
-    //   return Container(
-    //     width:MediaQuery.of(context).size.width,
-    //     height:150,
-    //     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-    //     decoration: BoxDecoration(
-    //     color: Colors.white,
-    //     borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-    //     boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), offset: Offset(0, -2), blurRadius: 5.0)]),
-    //     child:Column(
-    //       mainAxisAlignment: MainAxisAlignment.center,
-    //       crossAxisAlignment: CrossAxisAlignment.center,
-    //       children:[
-    //       Text("Out of Stock", style:TextStyleUtil.textBold(fontSz:20, tColor: Colors.red))
-    //     ]));
-    // }else{
-    // }
-    // }else{
-    //   return Container();
-    // }
     }
   }
 
