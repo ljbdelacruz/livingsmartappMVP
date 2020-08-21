@@ -5,6 +5,10 @@ import 'package:clean_data/base/architechture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_section_table_view/flutter_section_table_view.dart';
+import 'package:foody_ui/components/progress/circularloading.progress.dart';
+import 'package:livingsmart_app/components/widgets.ui.dart';
+import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/pages/productsearch/productsearch.presenter.dart';
 
 class ProductSearchPage extends CleanPage {
@@ -28,7 +32,8 @@ class ProductSearchPageState extends CleanPageState<ProductSearchPresenter> {
         heading(),
         Container(
           padding:EdgeInsets.only(left:30, right:30, top:20),
-          child:this.searchBar())
+          child:this.searchBar()),
+        productsSearch(),
       ]))
     ));
   }
@@ -61,9 +66,13 @@ class ProductSearchPageState extends CleanPageState<ProductSearchPresenter> {
     return Container(
       height:50,
       child: TextField(
+              onChanged: (text) async{
+                if(text == ""){
+                  presenter.fetchProducts("all");
+                }
+              },
               onSubmitted: (text) async {
-                // await _con.refreshSearch(text);
-                // _con.saveSearch(text);
+                presenter.fetchProducts(text);
               },
               autofocus: true,
               decoration: InputDecoration(
@@ -80,8 +89,31 @@ class ProductSearchPageState extends CleanPageState<ProductSearchPresenter> {
   }
 
   Widget productsSearch(){
-    
+    return presenter.products.length <= 0 ? CircularLoadingWidget(height: 0)  : Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height-150,
+      child: SafeArea(
+        child: SectionTableView(
+          sectionCount: 1,
+          numOfRowInSection: (section) {
+            return presenter.products.length;
+          },
+          cellAtIndexPath: (section, row) {
+            var item = presenter.products[row];
+            return GestureDetector(onTap:(){
+              //TODO: show product info
+              presenter.viewProductInfo(item);
+            }, child: WidgetUI.instance.productItemTBView(context, item.image != null ? Constants.instance.baseURL+item.image : Constants.instance.noImageDefault, item.name, ""));
+          },
+          divider: Container(
+            color: Colors.grey,
+            height: 1.0,
+          ),
+        ),
+      ),
+    );
   }
+
 
 
   
