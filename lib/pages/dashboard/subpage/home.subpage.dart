@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:foody_ui/components/buttons/shoppingcart.button.dart';
 import 'package:foody_ui/components/carditem/carditem.widget.dart';
+import 'package:foody_ui/components/progress/circularloading.progress.dart';
 import 'package:foody_ui/services/color.service.dart';
 import 'package:foody_ui/subui/loader.subui.dart';
 import 'package:foody_ui/subui/tableviewcells.subui.dart';
@@ -114,7 +115,7 @@ class HomeSubPage extends StatelessWidget {
 
   }
   Widget productCategory(BuildContext context){
-    return
+    return vm.categoryItems != null ? 
      Column(children:[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -132,15 +133,16 @@ class HomeSubPage extends StatelessWidget {
                 ),
               ),
               CategoriesCarouselWidget(this.selectedCategory,
-                categories: [CategoryItems(1, "Frozen Foods", "/images/products/1597331223.png"), CategoryItems(2, "Beverages", "/images/products/1597331223.png")],
+                categories: vm.categoryItems
               ),
-     ]);
+     ]) : CircularLoadingWidget(height:40);
   }
 
 }
 
 class HomeSubPageVM{
  List<LivingSmartStores> stores = [];
+ List<CategoryItems> categoryItems;
  String address;
- HomeSubPageVM(this.stores, {this.address="Address Here"});
+ HomeSubPageVM(this.stores, {this.address="Address Here", this.categoryItems});
 }

@@ -18,12 +18,14 @@ import 'package:foody_ui/components/drawer/livingsmart.drawer.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:livingsmart_app/components/categorieswidget.ui.dart';
 import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/pages/dashboard/subpage/home.subpage.dart';
 import 'package:livingsmart_app/services/delivery.service.dart';
 import 'package:livingsmart_app/services/firebasedatabase.service.dart';
 import 'package:livingsmart_app/services/navigator.service.dart';
 import 'package:clean_data/usecase/customer_use_case.dart';
+import 'package:clean_data/usecase/general_data_use_case.dart';
 import 'package:clean_data/model/userstore.dart';
 import 'package:livingsmart_app/services/snackbar.service.dart';
 
@@ -44,7 +46,8 @@ class DashboardPresenter extends CleanPresenter {
 
   bool isDeliveryInProgress=false;
   UserTransaction deliveryInProgressInfo;
-  
+
+  GeneralDataUseCase generalUseCase;
 
   double deliveryProgress=0.01;
   DashboardPresenter(CleanPageState<CleanPresenter> cleanPageState)
@@ -58,6 +61,7 @@ class DashboardPresenter extends CleanPresenter {
     this.mstoreUseCase=GetIt.I.get<MStoreUseCase>();
     this.addressUseCase=GetIt.I.get<AddressUseCase>();
     this.userAuthUseCase=GetIt.I.get<UserAuthUseCase>();
+    this.generalUseCase=GetIt.I.get<GeneralDataUseCase>();
 
     if(Constants.instance.session != null){
       drawerVM = LivingSmartDrawerVM(name: Constants.instance.session.user.name, email: Constants.instance.session.user.email, appVersion: Constants.instance.appVersion, 
@@ -74,6 +78,7 @@ class DashboardPresenter extends CleanPresenter {
       this.fetchUserTransactions();
     }
     this.getAddress();
+    this.fetchCategories();
   }
 
   fetchDefaultDeliveryAddress() async{
@@ -396,6 +401,28 @@ class DashboardPresenter extends CleanPresenter {
               markerId: MarkerId("storelocation"),
               position: LatLng(storeLocation.latitude, storeLocation.longitude),
       ));
+    }
+  }
+  fetchCategories() async{
+    try{
+      var list = await generalUseCase.getCategoriesList();
+      this.homeSubpage.categoryItems = [];
+      list.asMap().forEach((index,element) { 
+        homeSubpage.categoryItems.add(CategoryItems(index, element.category_name, "/images/products/1597331223.png"));
+      });
+      cleanPageState.setState(() {});
+    }on DioError catch (e) {
+       switch (e.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+          SnackBarService.textSnack(scaffoldKey, "No Internet Connection available");
+          break;
+        case DioErrorType.RESPONSE:
+          SnackBarService.textSnack(scaffoldKey, "Unable to fetch categories");
+          break;
+        default:
+          SnackBarService.textSnack(scaffoldKey, "Unable to process this request at this time");
+          break;
+      }
     }
   }
 
