@@ -57,6 +57,8 @@ class MStoreTransactionInfoPageState extends CleanPageState<MStoreTransactionPre
           Text("Customer Name: "+presenter.selectedTransaction.details.customer_name, style:TextStyleUtil.textBold(fontSz:12, tColor:Colors.grey)),
           Text("Address: "+presenter.selectedTransaction.details.delivery_address, style:TextStyleUtil.textBold(fontSz:12, tColor:Colors.grey)),
           Text("Mobile: "+presenter.selectedTransaction.details.customer_mobile, style:TextStyleUtil.textBold(fontSz:12, tColor:Colors.grey)),
+          SizedBox(height:20),
+          driverInfo()
         ])),
         SizedBox(height:20),
         Container(
@@ -65,6 +67,15 @@ class MStoreTransactionInfoPageState extends CleanPageState<MStoreTransactionPre
             child:products()
         )
     ]));
+  }
+
+  Widget driverInfo(){
+    return presenter.selectedTransaction.details.status == "for delivery" && presenter.selectedTransaction.details.rider_name != "null" ? Container(child:Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:[
+          Text("Rider: "+presenter.selectedTransaction.details.rider_name, style:TextStyleUtil.textBold(fontSz:12, tColor:Colors.grey)),
+          Text("Mobile: "+presenter.selectedTransaction.details.rider_mobile, style:TextStyleUtil.textBold(fontSz:12, tColor:Colors.grey)),
+    ])) : Container();
   }
 
   Widget products(){

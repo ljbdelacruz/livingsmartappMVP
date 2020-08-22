@@ -115,7 +115,6 @@ class MStoreTransactionsPageState extends CleanPageState<MStoreTransactionPresen
         Container(
           width:MediaQuery.of(context).size.width-200,
           child:Text(item.customer_address, style:TextStyleUtil.textBold(fontSz:12, tColor:Colors.grey))),
-        buttonCells(item)
       ]),
       SizedBox(height:10),
       Row(
@@ -127,7 +126,12 @@ class MStoreTransactionsPageState extends CleanPageState<MStoreTransactionPresen
       SizedBox(height:20),
       Container(
         width:MediaQuery.of(context).size.width,
-        child:Text(item.products.toString()+" Items", style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children:[
+         Text(item.products.toString()+" Items", style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey)),
+         buttonCells(item),
+        ]))
     ])));
   }
 
