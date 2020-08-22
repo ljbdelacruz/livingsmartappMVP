@@ -43,6 +43,7 @@ class Constants{
 
   LivingSmartStores storeDirectionSelected;
   bool isDeliveryInProgress=false;
+  String selectedCategory="all";
 
 
   //Firebase

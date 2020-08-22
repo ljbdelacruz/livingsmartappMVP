@@ -20,18 +20,28 @@ class ProductSearchPresenter extends CleanPresenter {
  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
  List<Product> products = [];
  UnauthenticatedUseCase unauthUseCase;
+ bool autoFocusTF=true;
   
  ProductSearchPresenter(CleanPageState<CleanPresenter> cleanPageState)
       : super(cleanPageState);
   @override
   void onViewInit() {
     this.unauthUseCase = GetIt.I.get<UnauthenticatedUseCase>();
+    if(Constants.instance.selectedCategory != "all"){
+      this.autoFocusTF=false;
+    }
     fetchProducts("all");
   }
 
   fetchProducts(String text) async{
     try{
-      this.products = await unauthUseCase.searchProductsAllStoreCategory("all", text);
+      var categoryFilter="all";
+      if(text == "all"){
+        categoryFilter=Constants.instance.selectedCategory;
+      }else{
+        Constants.instance.selectedCategory="all";
+      }
+      this.products = await unauthUseCase.searchProductsAllStoreCategory(categoryFilter, text);
       cleanPageState.setState(() { });
     }on DioError catch (e) {
        switch (e.type) {

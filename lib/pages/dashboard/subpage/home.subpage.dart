@@ -10,6 +10,7 @@ import 'package:foody_ui/services/color.service.dart';
 import 'package:foody_ui/subui/loader.subui.dart';
 import 'package:foody_ui/subui/tableviewcells.subui.dart';
 import 'package:foody_ui/typdef/mytypedef.dart';
+import 'package:livingsmart_app/components/categorieswidget.ui.dart';
 import 'package:livingsmart_app/components/widgets.ui.dart';
 import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/services/navigator.service.dart';
@@ -19,8 +20,9 @@ import 'package:livingsmart_app/services/navigator.service.dart';
 class HomeSubPage extends StatelessWidget {
   final NormalCallback refreshHome;
   final NormalCallback direction;
+  final GetStringData selectedCategory;
   final HomeSubPageVM vm;
-  HomeSubPage(this.vm, this.refreshHome, this.direction);
+  HomeSubPage(this.vm, this.refreshHome, this.direction, this.selectedCategory);
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +73,7 @@ class HomeSubPage extends StatelessWidget {
               ),
 
               storeList(context),
+              productCategory(context)
               //TODO: List of Living Smart Data
               // CardsCarouselWidget(restaurantsList: _con.topRestaurants, heroTag: 'home_top_restaurants'),
 
@@ -109,6 +112,29 @@ class HomeSubPage extends StatelessWidget {
       }
     }
 
+  }
+  Widget productCategory(BuildContext context){
+    return
+     Column(children:[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ListTile(
+                  dense: true,
+                  contentPadding: EdgeInsets.symmetric(vertical: 0),
+                  leading: Icon(
+                    Icons.category,
+                    color: Theme.of(context).hintColor,
+                  ),
+                  title: Text(
+                    "Product Categories",
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                ),
+              ),
+              CategoriesCarouselWidget(this.selectedCategory,
+                categories: [CategoryItems(1, "Frozen Foods", "/images/products/1597331223.png"), CategoryItems(2, "Beverages", "/images/products/1597331223.png")],
+              ),
+     ]);
   }
 
 }

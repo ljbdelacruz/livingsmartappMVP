@@ -399,6 +399,11 @@ class DashboardPresenter extends CleanPresenter {
     }
   }
 
+  selectedCategory(String category){
+    Constants.instance.selectedCategory = category;
+    NavigatorService.instance.toSearchProduct(context);
+  }
+
 
 
 

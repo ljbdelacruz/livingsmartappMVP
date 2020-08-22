@@ -48,10 +48,7 @@ class DashboardPageState extends CleanPageState<DashboardPresenter> {
         case 2:
           return HomeSubPage(presenter.homeSubpage, (){
             //TODO: refresh home
-          }, (){
-            //TODO: Direction
-            presenter.showDirectionStore();
-          });
+          }, presenter.showDirectionStore, presenter.selectedCategory);
           break;
         case 3:
           return UserTransactionsSubPage(UserTransactionsSubPageVM(Constants.instance.userTransactions), (transCode){
@@ -110,6 +107,9 @@ class DashboardPageState extends CleanPageState<DashboardPresenter> {
       ),
     );
   }
+
+
+
   Widget deliveryStatus(){
     return presenter.isDeliveryInProgress ? GestureDetector(onTap:(){
       NavigatorService.instance.toDeliveryInfo(context);

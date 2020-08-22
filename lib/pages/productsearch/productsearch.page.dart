@@ -74,7 +74,7 @@ class ProductSearchPageState extends CleanPageState<ProductSearchPresenter> {
               onSubmitted: (text) async {
                 presenter.fetchProducts(text);
               },
-              autofocus: true,
+              autofocus: presenter.autoFocusTF,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(12),
                 hintText: "Product Search",
