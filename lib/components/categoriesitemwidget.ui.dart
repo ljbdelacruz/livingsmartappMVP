@@ -37,7 +37,7 @@ class CategoriesCarouselItemWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(15),
                 child: category.image != null
-                    ? CachedNetworkImage(imageUrl: Constants.instance.baseURL+category.image)
+                    ? CachedNetworkImage(imageUrl: Constants.instance.baseURL+category.image, width:100, height:100, fit: BoxFit.cover,)
                     : CachedNetworkImage(
                         fit: BoxFit.cover,
                         imageUrl: Constants.instance.baseURL+category.image,

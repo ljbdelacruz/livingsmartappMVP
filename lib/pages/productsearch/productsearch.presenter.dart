@@ -6,6 +6,8 @@ import 'dart:async';
 
 import 'package:clean_data/base/architechture.dart';
 import 'package:clean_data/model/product.dart';
+import 'package:clean_data/model/userstore.dart';
+import 'package:clean_data/usecase/customer_use_case.dart';
 import 'package:clean_data/usecase/unauthenticated_use_case.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -20,13 +22,17 @@ class ProductSearchPresenter extends CleanPresenter {
  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
  List<Product> products = [];
  UnauthenticatedUseCase unauthUseCase;
+ CustomerUseCase customerUseCase;
  bool autoFocusTF=true;
+ LivingSmartStoreInfo selectedStore;
+
   
  ProductSearchPresenter(CleanPageState<CleanPresenter> cleanPageState)
       : super(cleanPageState);
   @override
   void onViewInit() {
     this.unauthUseCase = GetIt.I.get<UnauthenticatedUseCase>();
+
     if(Constants.instance.selectedCategory != "all"){
       this.autoFocusTF=false;
     }

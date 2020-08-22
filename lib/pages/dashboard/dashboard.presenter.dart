@@ -408,7 +408,7 @@ class DashboardPresenter extends CleanPresenter {
       var list = await generalUseCase.getCategoriesList();
       this.homeSubpage.categoryItems = [];
       list.asMap().forEach((index,element) { 
-        homeSubpage.categoryItems.add(CategoryItems(index, element.category_name, "/images/products/1597331223.png"));
+        homeSubpage.categoryItems.add(CategoryItems(index, element.category_name, element.category_image));
       });
       cleanPageState.setState(() {});
     }on DioError catch (e) {
