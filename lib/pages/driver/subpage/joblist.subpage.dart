@@ -185,9 +185,10 @@ class JobListSubPage extends StatelessWidget {
         ]),
       ]),
       SizedBox(height:20),
-      Row(children:[
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children:[
         Container(
-          width:MediaQuery.of(context).size.width-250,
           child:Text(item.products.toString()+" Items", style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey))),
           button(item, click, (){
             print("Event Clicked");

@@ -48,7 +48,7 @@ class DriverPresenter extends CleanPresenter {
     this.fetchAvailableJobs();
     this.fetchCompleteDeliveries();
     this.fetchMyLocation();
-    if(this.selectedJobTransCode.length > 0){
+    if( this.selectedJobTransCode != null && this.selectedJobTransCode.length > 0){
       this.fetchDeliveryDetails(this.selectedJobTransCode);
     }
   }
@@ -152,7 +152,9 @@ class DriverPresenter extends CleanPresenter {
   fetchCurrentDelivery() async{
     try{
       this.currentActiveDelivery = await mcsRiderUseCase.listCurrentDelivery();
-      fetchDeliveryDetails(this.currentActiveDelivery.transaction_code);
+      if(this.currentActiveDelivery != null){
+        fetchDeliveryDetails(this.currentActiveDelivery.transaction_code);
+      }
       cleanPageState.setState(() {});
     }on DioError catch (e) {
        switch (e.type) {
