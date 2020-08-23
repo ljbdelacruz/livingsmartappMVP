@@ -52,7 +52,6 @@ class CartItemPageState extends CleanPageState<CartPresenter> {
       }, (){
         //TODO: click item
         Constants.instance.selectedProdId=element.product_id;
-        Constants.instance.selectedStoreId=element.store_id;
         NavigatorService.instance.toProductInfo(context);
       }, (){
         presenter.increment(element);

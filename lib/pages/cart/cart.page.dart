@@ -68,9 +68,9 @@ class CartPageState extends CleanPageState<CartPresenter> {
       // items.add(Text(element.name));
       items.add(cartStoreItem(CardItem1WidgetVM("cartstore"+element.id.toString(), element.id.toString(), image:element.image != "" ? Constants.instance.baseURL+element.image : "", quantity: 0, name:element.name, bgColor: Colors.white), (){
         //navigate to store cart items
-        print(element.name);
         Constants.instance.cartItemHeader=element.name;
         Constants.instance.cartStoreId=element.id;
+        Constants.instance.selectedStoreId=element.id;
         NavigatorService.instance.toCartItem(context);
       }, (){
         //remove store

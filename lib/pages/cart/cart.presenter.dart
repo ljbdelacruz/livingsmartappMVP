@@ -44,15 +44,13 @@ class CartPresenter extends CleanPresenter {
     if(this.cartItemHeader.length > 0){
       this.fetchStoreCartItems();
       this.fetchStoreInfo();
+    }else{
+      this.fetchStoreCart();
     }
-    this.fetchStoreCart();
   }
 
   fetchStoreInfo(){
-    print("selected store id");
-    print(storeCartId);
     this.selectedStore=this.storeCarts.where((element) => element.id == storeCartId).first;
-    print(selectedStore.name);
   }
   fetchStoreCart() async{
     try{
@@ -121,8 +119,11 @@ class CartPresenter extends CleanPresenter {
   }
 
   fetchStoreCartItems() async{
+    print("Fetching Cart items");
     try{
       this.cartStoreItems = await customerUseCase.getCartStoreProducts(this.storeCartId);
+      print("Success fetching store cart items");
+      print(this.cartStoreItems.toString());
       cleanPageState.setState(() {});
     }on DioError catch (e) {
        switch (e.type) {
@@ -136,7 +137,7 @@ class CartPresenter extends CleanPresenter {
         case DioErrorType.RESPONSE:
           scaffoldKey.currentState.showSnackBar(
             SnackBar(
-              content: Text("Unable to remove cart"),
+              content: Text("Unable to fetch items"),
             ),
           );
           break;

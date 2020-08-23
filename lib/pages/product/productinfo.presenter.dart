@@ -42,6 +42,8 @@ class ProductInfoPresenter extends CleanPresenter {
 
   fetchStoreInfo() async{
     try{
+      print("Fetching store info");
+      print(Constants.instance.selectedStoreId);
       this.selectedStore = await unauthenticatedUseCase.getListAllStoresProduct(Constants.instance.selectedStoreId);
       cleanPageState.setState(() { });
     }on DioError catch (e) {
@@ -56,7 +58,7 @@ class ProductInfoPresenter extends CleanPresenter {
         case DioErrorType.RESPONSE:
           scaffoldKey.currentState.showSnackBar(
             SnackBar(
-              content: Text("Unable to remove cart"),
+              content: Text("Unable to fetch store info"),
             ),
           );
           break;
@@ -72,6 +74,8 @@ class ProductInfoPresenter extends CleanPresenter {
   }
   fetchProductInfo() async{
     try{
+      print("Fetching product info");
+      print(Constants.instance.selectedProdId);
       this.selectedProd = await unauthenticatedUseCase.fetchProductInfoByID(Constants.instance.selectedProdId);
       cleanPageState.setState(() { });
     }on DioError catch (e) {
@@ -86,7 +90,7 @@ class ProductInfoPresenter extends CleanPresenter {
         case DioErrorType.RESPONSE:
           scaffoldKey.currentState.showSnackBar(
             SnackBar(
-              content: Text("Unable to remove cart"),
+              content: Text("Unable to fetch product info"),
             ),
           );
           break;

@@ -137,7 +137,7 @@ class SettingsPageState extends CleanPageState<SettingsPresenter> {
                               style: Theme.of(context).textTheme.bodyText2,
                             ),
                             trailing: Text(
-                              "",
+                              Constants.instance.defaultAddress != null ? Constants.instance.defaultAddress.address.substring(0,27) : "",
                               overflow: TextOverflow.fade,
                               softWrap: false,
                               style: TextStyle(color: Theme.of(context).focusColor),
