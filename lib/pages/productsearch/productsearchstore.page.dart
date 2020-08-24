@@ -58,7 +58,7 @@ class ProductSearchStorePageState extends CleanPageState<ProductSearchPresenter>
                 style: Theme.of(context).textTheme.headline4,
               ),
               subtitle: Text(
-                "LivingSmart Products",
+                presenter.selectedStore != null ? presenter.selectedStore.store_info.name+" Products" : "",
                 style: Theme.of(context).textTheme.caption,
               ),
             ),
@@ -70,11 +70,11 @@ class ProductSearchStorePageState extends CleanPageState<ProductSearchPresenter>
       child: TextField(
               onChanged: (text) async{
                 if(text == ""){
-                  presenter.fetchProducts("all");
+                  presenter.fetchProductStore("all");
                 }
               },
               onSubmitted: (text) async {
-                presenter.fetchProducts(text);
+                presenter.fetchProductStore(text);
               },
               autofocus: presenter.autoFocusTF,
               decoration: InputDecoration(
@@ -91,17 +91,17 @@ class ProductSearchStorePageState extends CleanPageState<ProductSearchPresenter>
   }
 
   Widget productsSearch(){
-    return presenter.products.length <= 0 ? CircularLoadingWidget(height: 0)  : Container(
+    return presenter.storeProducts.length <= 0 ? CircularLoadingWidget(height: 0)  : Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height-150,
       child: SafeArea(
         child: SectionTableView(
           sectionCount: 1,
           numOfRowInSection: (section) {
-            return presenter.products.length;
+            return presenter.storeProducts.length;
           },
           cellAtIndexPath: (section, row) {
-            var item = presenter.products[row];
+            var item = presenter.storeProducts[row];
             return GestureDetector(onTap:(){
               //TODO: show product info
               presenter.viewProductInfo(item);

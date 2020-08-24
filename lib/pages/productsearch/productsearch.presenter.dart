@@ -38,7 +38,12 @@ class ProductSearchPresenter extends CleanPresenter {
     if(Constants.instance.selectedCategory != "all"){
       this.autoFocusTF=false;
     }
-    fetchProducts("all");
+    this.selectedStore=Constants.instance.mstoreData;
+    if(this.selectedStore != null){
+      fetchProductStore("all");
+    }else{
+      fetchProducts("all");
+    }
   }
 
   fetchProducts(String text) async{
@@ -65,30 +70,32 @@ class ProductSearchPresenter extends CleanPresenter {
       }
     }
   }
-  // fetchProductStore(String text) async{
-  //   try{
-  //     var categoryFilter="all";
-  //     if(text == "all"){
-  //       categoryFilter=Constants.instance.selectedCategory;
-  //     }else{
-  //       Constants.instance.selectedCategory="all";
-  //     }
-  //     this.products = await unauthUseCase.search(categoryFilter, text);
-  //     cleanPageState.setState(() { });
-  //   }on DioError catch (e) {
-  //      switch (e.type) {
-  //       case DioErrorType.CONNECT_TIMEOUT:
-  //         SnackBarService.textSnack(scaffoldKey, "No Internet Connection available");
-  //         break;
-  //       case DioErrorType.RESPONSE:
-  //         SnackBarService.textSnack(scaffoldKey, "Unable to fetch Product list");
-  //         break;
-  //       default:
-  //         SnackBarService.textSnack(scaffoldKey, "Unable to process this request at this time");
-  //         break;
-  //     }
-  //   }
-  // }
+  fetchProductStore(String text) async{
+    try{
+      var categoryFilter="all";
+      if(text == "all"){
+        categoryFilter=Constants.instance.selectedCategory;
+      }else{
+        Constants.instance.selectedCategory="all";
+      }
+      print("Category filter");
+      print(categoryFilter);
+      this.storeProducts = await unauthUseCase.searchStoreProducts(this.selectedStore.store_info.id, categoryFilter, text);
+      cleanPageState.setState(() { });
+    }on DioError catch (e) {
+       switch (e.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+          SnackBarService.textSnack(scaffoldKey, "No Internet Connection available");
+          break;
+        case DioErrorType.RESPONSE:
+          SnackBarService.textSnack(scaffoldKey, "Unable to fetch Product list");
+          break;
+        default:
+          SnackBarService.textSnack(scaffoldKey, "Unable to process this request at this time");
+          break;
+      }
+    }
+  }
 
 
 

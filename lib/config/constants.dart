@@ -13,6 +13,7 @@ import 'package:livingsmart_app/services/firebase.service.dart';
 import 'package:livingsmart_app/services/map.service.dart';
 import 'package:clean_data/model/transactions.dart';
 import 'package:clean_data/model/transactions.dart';
+import 'package:clean_data/model/category.dart';
 
 class Constants{
   String baseURL = "http://ec2-54-254-243-70.ap-southeast-1.compute.amazonaws.com:8000";
@@ -47,6 +48,7 @@ class Constants{
 
   //TODO: invoke selectedTab transaction tab driver;
   int selectedTab=0;
+  List<FoodyCategory> foodCategories = [];
   
 
   //Firebase

@@ -14,6 +14,7 @@ import 'package:foody_ui/components/progress/circularloading.progress.dart';
 import 'package:foody_ui/services/color.service.dart';
 import 'package:foody_ui/subui/tabs.subui.dart';
 import 'package:foody_ui/util/text_style_util.dart';
+import 'package:livingsmart_app/components/categorieswidget.ui.dart';
 import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/pages/product/storeinfo.presenter.dart';
 import 'package:foody_ui/components/progress/foodloader.progress.dart';
@@ -52,7 +53,8 @@ class StoreInfoPageState extends CleanPageState<StoreInfoPresenter> with SingleT
             style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
           )
         ),
-        body: SingleChildScrollView(child: bodyWidget())
+        body: SingleChildScrollView(child: bodyWidget()),
+
       ));
     }
   }
@@ -60,17 +62,26 @@ class StoreInfoPageState extends CleanPageState<StoreInfoPresenter> with SingleT
     return Container(child:Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children:[
-          CachedNetworkImage(
-                                  fit: BoxFit.cover,
-                                  width: MediaQuery.of(context).size.width,
-                                  height:200,
-                                  imageUrl: presenter.storeInfo.store_info.image != "null" ? Constants.instance.baseURL+presenter.storeInfo.store_info.image : Constants.instance.noImageDefault,
-                                  placeholder: (context, url) => Image.asset(
-                                    'assets/images/loader/loading.gif',
-                                    fit: BoxFit.cover,
-                                  ),
-                                  errorWidget: (context, url, error) => Icon(Icons.error),
-          ),
+          Container(
+            width:MediaQuery.of(context).size.width,
+            height:200, child: Stack(children:[
+                CachedNetworkImage(
+                                        fit: BoxFit.cover,
+                                        width: MediaQuery.of(context).size.width,
+                                        height:200,
+                                        imageUrl: presenter.storeInfo.store_info.image != "null" ? Constants.instance.baseURL+presenter.storeInfo.store_info.image : Constants.instance.noImageDefault,
+                                        placeholder: (context, url) => Image.asset(
+                                          'assets/images/loader/loading.gif',
+                                          fit: BoxFit.cover,
+                                        ),
+                                        errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
+                Positioned(
+                      top: 10,
+                      right: 20,
+                      child: searchButton(),
+                ),
+          ])),
           Container(
             padding:EdgeInsets.only(left:30, top: 20),
             child: Text(presenter.storeInfo.store_info.name, style:TextStyleUtil.textBold(fontSz:20, tColor: Colors.grey))),
@@ -94,7 +105,13 @@ class StoreInfoPageState extends CleanPageState<StoreInfoPresenter> with SingleT
             padding:EdgeInsets.only(left:30, top: 0, bottom:20),
             child: Text(presenter.storeInfo.store_info.phone, style:TextStyleUtil.textNormal(fontSz:12, tColor: Colors.grey))),
           Divider(thickness: 2,),
+          CategoriesCarouselWidget(presenter.selectedCategory,
+                categories: presenter.categoryItems
+          ),
+          
           tabs(),
+
+
           Container(
             width:MediaQuery.of(context).size.width,
             height:400,
@@ -102,6 +119,34 @@ class StoreInfoPageState extends CleanPageState<StoreInfoPresenter> with SingleT
           )
       ]));
   }
+
+  Widget searchButton(){
+    return SizedBox(
+      width: 60,
+      height: 60,
+      child: RaisedButton(
+        padding: EdgeInsets.all(0),
+        color: Colors.white,
+        shape: StadiumBorder(),
+        onPressed: () {
+          presenter.searchProducts();
+        },
+        child: Stack(
+          alignment: AlignmentDirectional.bottomEnd,
+          children: <Widget>[
+            Icon(
+              Icons.search,
+              color: Colors.black,
+              size: 28,
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+
+
   Widget tabs(){
     return TabsSubUI.instance.wUITabs(["Shop", "Products"], presenter.tabController, lblColor:Colors.black, usColor: Colors.black, indiColor: Colors.black);
   }

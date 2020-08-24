@@ -406,6 +406,7 @@ class DashboardPresenter extends CleanPresenter {
   fetchCategories() async{
     try{
       var list = await generalUseCase.getCategoriesList();
+      Constants.instance.foodCategories=list;
       this.homeSubpage.categoryItems = [];
       list.asMap().forEach((index,element) { 
         homeSubpage.categoryItems.add(CategoryItems(index, element.category_name, element.category_image));

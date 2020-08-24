@@ -27,6 +27,7 @@ import 'package:livingsmart_app/pages/mstore/mstoretransactions.page.dart';
 import 'package:livingsmart_app/pages/product/productinfo.page.dart';
 import 'package:livingsmart_app/pages/product/storeinfo.page.dart';
 import 'package:livingsmart_app/pages/productsearch/productsearch.page.dart';
+import 'package:livingsmart_app/pages/productsearch/productsearchstore.page.dart';
 import 'package:livingsmart_app/pages/register/forgot.page.dart';
 import 'package:livingsmart_app/pages/register/register.page.dart';
 import 'package:livingsmart_app/pages/settings/settings.page.dart';
@@ -53,6 +54,9 @@ class NavigatorService{
 
   toSearchProduct(BuildContext context){
      Navigator.push(context,MaterialPageRoute(builder: (context) => ProductSearchPage()));
+  }
+  toSearchProductStore(BuildContext context){
+     Navigator.push(context,MaterialPageRoute(builder: (context) => ProductSearchStorePage()));
   }
 
   //Map Direction
