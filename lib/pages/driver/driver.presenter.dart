@@ -28,6 +28,7 @@ class DriverPresenter extends CleanPresenter {
  List<RiderDelivery> completedDeliveries = [];
  RiderCurrentDelivery currentActiveDelivery;
  RiderCurrentDeliveryInfo currentDeliveryInfo;
+ TabController tabController;
 
  //TODO: maps
   CameraPosition cameraPosition;
@@ -48,9 +49,11 @@ class DriverPresenter extends CleanPresenter {
     this.fetchAvailableJobs();
     this.fetchCompleteDeliveries();
     this.fetchMyLocation();
+    this.tabController=TabController(length: 3, vsync: this.cleanPageState);
     if( this.selectedJobTransCode != null && this.selectedJobTransCode.length > 0){
       this.fetchDeliveryDetails(this.selectedJobTransCode);
     }
+    
   }
   fetchMyLocation(){
     this.assignCamPosition(Constants.instance.mapService.currentPosition);
@@ -309,6 +312,12 @@ class DriverPresenter extends CleanPresenter {
 
       // var pos = Constants.instance.mapService.currentPosition;
       // URLService.launchMapsUrl(pos.latitude, pos.longitude, this.currentDeliveryInfo.details.customer_latitude, this.currentDeliveryInfo.details.customer_longitude);
+  }
+  menuClickOption(int option){
+    print("Menu Option Click");
+    this.tabController.animateTo(option);
+    this.selectTab(2);
+    cleanPageState.setState(() {});
   }
 
 

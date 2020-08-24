@@ -49,9 +49,9 @@ class DriverDashboardPageState extends CleanPageState<DriverPresenter> {
       case 0:
         return Container();
       case 1:
-        return DriverHomeSubPage();
+        return DriverHomeSubPage(DriverHomeSubPageVM( jobCount:presenter.jobList != null ? presenter.jobList.length : 0, completedJob: presenter.completedDeliveries != null ? presenter.completedDeliveries.length : 0, currentJob: presenter.currentActiveDelivery != null? 1 : 0), presenter.menuClickOption);
       case 2:
-          return JobListSubPage(JobListSubPageVM(presenter.jobList, presenter.completedDeliveries, presenter.currentDeliveryInfo, presenter.currentActiveDelivery), (String transCode){
+          return JobListSubPage(JobListSubPageVM(presenter.jobList, presenter.completedDeliveries, presenter.currentDeliveryInfo, presenter.currentActiveDelivery, presenter.tabController), (String transCode){
             //TODO: view job info
             Constants.instance.selectedJobTransCode=transCode;
             NavigatorService.instance.toDriverDirection(context);

@@ -13,12 +13,15 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_section_table_view/flutter_section_table_view.dart';
 import 'package:foody_ui/components/header/tabbed1.header.dart';
 import 'package:foody_ui/components/progress/circularloading.progress.dart';
+import 'package:foody_ui/services/color.service.dart';
+import 'package:foody_ui/typdef/mytypedef.dart';
 import 'package:foody_ui/util/text_style_util.dart';
 import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/pages/mstore/mstoredashboard.presenter.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:livingsmart_app/services/navigator.service.dart';
 import 'package:foody_ui/components/cells/fooditem1widget.cells.dart';
+import 'package:foody_ui/subui/slivers.subui.dart';
 
 
 class MStoreDashboardPage extends CleanPage {
@@ -99,17 +102,47 @@ class MStoreDashboardPageState extends CleanPageState<MStoreDashboardPresenter> 
   }
   Widget transactionHist(){
     return Container(
-        // color:Colors.blue,
         width:MediaQuery.of(context).size.width,
         height:(MediaQuery.of(context).size.height/2)-152,
-        child:SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child:Column(children:[
-          Text("Transaction History"),
-          transactionCells()
-        ]))
+        child:stackMenu()
     );
   }
+
+  Widget stackMenu(){
+    List<Widget> options = [];
+    options.add(optionIcon(Icons.list, "Pending", presenter.pending, (){
+      NavigatorService.instance.toMStoreTransactions(context);
+    }));
+    options.add(optionIcon(Icons.directions_walk, "Processing", presenter.processing, (){
+      NavigatorService.instance.toMStoreTransactions(context);
+    }));
+    options.add(optionIcon(Icons.check_circle_outline, "Delivered", presenter.delivered, (){
+      NavigatorService.instance.toMStoreTransactions(context);
+    }));
+    options.add(optionIcon(Icons.cancel, "Cancelled", presenter.cancelled, (){
+      NavigatorService.instance.toMStoreTransactions(context);
+    }));
+
+    return SliversSubUI.instance.stackOption(options, 2);
+  }
+
+  Widget optionIcon(IconData icon,String label, int count, NormalCallback click){
+    return GestureDetector(onTap:click, child: Container(
+          width:200,
+          height:200,
+          padding:EdgeInsets.all(40),
+            decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          boxShadow: [BoxShadow(color: Colors.white, offset: Offset(0, -2), blurRadius: 5.0)]),
+      child:Column(children:[
+      Text(count.toString(), style:TextStyleUtil.textBold(fontSz:30, tColor:ColorsService.instance.primaryColor())),
+      Text(label, style:TextStyleUtil.textNormal(fontSz:12, tColor:Colors.grey)),
+      Icon(icon, size:30, color:Colors.grey)
+    ])));
+  }
+
+
   Widget tabbedMenu(){
     return DefaultTabController(
                         length: 2,

@@ -6,7 +6,9 @@
 import 'dart:async';
 
 import 'package:clean_data/base/architechture.dart';
+import 'package:clean_data/model/transactions.dart';
 import 'package:clean_data/model/userstore.dart';
+import 'package:clean_data/usecase/transaction_use_case.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -23,16 +25,24 @@ class MStoreDashboardPresenter extends CleanPresenter {
  TextEditingController phoneNumber = new TextEditingController();
  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
  MStoreUseCase mstoreUseCase;
+ MStoreTransactionUseCase mstoreTransUseCase;
  String storeName;
  LivingSmartStoreInfo storeInfo;
+  List<MStoreTransaction> transactions = [];
+ int pending=0;
+ int processing=0;
+ int delivered=0;
+ int cancelled=0;
 
  MStoreDashboardPresenter(CleanPageState<CleanPresenter> cleanPageState)
       : super(cleanPageState);
   @override
   void onViewInit() {
     this.mstoreUseCase=GetIt.I.get<MStoreUseCase>();
+    this.mstoreTransUseCase = GetIt.I.get<MStoreTransactionUseCase>();
     this.fetchGlobalProductItem();
     this.fetchMStoreData();
+    fetchTransactions();
   }
 
   fetchMStoreData() async{
@@ -57,6 +67,8 @@ class MStoreDashboardPresenter extends CleanPresenter {
       }
     }
   }
+
+
 
   fetchGlobalProductItem() async{
     try{
@@ -84,6 +96,32 @@ class MStoreDashboardPresenter extends CleanPresenter {
               content: Text("Unable to process this request at this time"),
             ),
           );
+          break;
+      }
+    }
+  }
+
+  filterTransactions(){
+   this.pending=this.transactions.where((element) => element.status == "pending").length;
+   this.processing=this.transactions.where((element) => element.status == "processing").length;
+   this.delivered=this.transactions.where((element) => element.status == "delivered").length;
+   this.cancelled = this.transactions.where((element) => element.status == "cancelled").length;
+   cleanPageState.setState(() { });
+  }
+  fetchTransactions() async{
+    try{
+      this.transactions = await mstoreTransUseCase.getTransactions();
+      this.filterTransactions();
+    }on DioError catch (e) {
+       switch (e.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+          SnackBarService.textSnack(scaffoldKey, "No Internet Connection available");
+          break;
+        case DioErrorType.RESPONSE:
+          SnackBarService.textSnack(scaffoldKey, "Unable to fetch Product list");
+          break;
+        default:
+          SnackBarService.textSnack(scaffoldKey, "Unable to process this request at this time");
           break;
       }
     }

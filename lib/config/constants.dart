@@ -45,6 +45,9 @@ class Constants{
   bool isDeliveryInProgress=false;
   String selectedCategory="all";
 
+  //TODO: invoke selectedTab transaction tab driver;
+  int selectedTab=0;
+  
 
   //Firebase
   FBRemoteConfigModel fbconfig=FBRemoteConfigModel();

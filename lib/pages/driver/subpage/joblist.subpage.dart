@@ -23,36 +23,29 @@ class JobListSubPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Column(children:[
-      tabbedOptions(context)
-    ]);
-  }
-
-  Widget tabbedOptions(BuildContext context) {
-    return Container(
-      // color:Colors.red,
-      width:MediaQuery.of(context).size.width,
-      height:MediaQuery.of(context).size.height-152,
-      child:tabbedMenu(context));
+    return tabbedMenu(context);
   }
   Widget tabbedMenu(BuildContext context){
-    return DefaultTabController(
-                        length: 3,
-                        // color:Colors.white,
-                        child: Scaffold(
-                        appBar: PreferredSize(child: Tabbed1Header(Tabbed1HeaderVM("", [
+    return Scaffold(
+      appBar:new AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        bottom: new TabBar(
+          controller: vm.tabController,
+          tabs: [
                           Tab(text: "Jobs("+vm.joblist.length.toString()+")"),
                           Tab(text: "Completed"),
                           Tab(text: "Current"),
-                        ])), preferredSize: Size.fromHeight(100)),
-                        backgroundColor: Colors.transparent,
-                        body:TabBarView(children: [
+          ],
+        ),
+        ),
+        body:TabBarView(
+                          controller:vm.tabController,
+                          children: [
                           Container(child:jobsListTab(context)),
                           Container(child: completedTab(context)),
                           Container(child:currentDeliveryInfo(context))
-                        ])
-                      ),
-    );
+      ]));
   }
 
   Widget jobsListTab(BuildContext context){
@@ -217,5 +210,7 @@ class JobListSubPageVM{
   List<RiderDelivery> completedDel = [];
   RiderCurrentDeliveryInfo currentDeliveryInfo;
   RiderCurrentDelivery currentActiveDelivery;
-  JobListSubPageVM(this.joblist,this.completedDel, this.currentDeliveryInfo, this.currentActiveDelivery);
+  TabController tabController;
+
+  JobListSubPageVM(this.joblist,this.completedDel, this.currentDeliveryInfo, this.currentActiveDelivery, this.tabController);
 }

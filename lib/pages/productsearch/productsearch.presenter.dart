@@ -21,6 +21,8 @@ class ProductSearchPresenter extends CleanPresenter {
 
  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
  List<Product> products = [];
+ List<Product> storeProducts = [];
+
  UnauthenticatedUseCase unauthUseCase;
  CustomerUseCase customerUseCase;
  bool autoFocusTF=true;
@@ -63,6 +65,33 @@ class ProductSearchPresenter extends CleanPresenter {
       }
     }
   }
+  // fetchProductStore(String text) async{
+  //   try{
+  //     var categoryFilter="all";
+  //     if(text == "all"){
+  //       categoryFilter=Constants.instance.selectedCategory;
+  //     }else{
+  //       Constants.instance.selectedCategory="all";
+  //     }
+  //     this.products = await unauthUseCase.search(categoryFilter, text);
+  //     cleanPageState.setState(() { });
+  //   }on DioError catch (e) {
+  //      switch (e.type) {
+  //       case DioErrorType.CONNECT_TIMEOUT:
+  //         SnackBarService.textSnack(scaffoldKey, "No Internet Connection available");
+  //         break;
+  //       case DioErrorType.RESPONSE:
+  //         SnackBarService.textSnack(scaffoldKey, "Unable to fetch Product list");
+  //         break;
+  //       default:
+  //         SnackBarService.textSnack(scaffoldKey, "Unable to process this request at this time");
+  //         break;
+  //     }
+  //   }
+  // }
+
+
+
   viewProductInfo(Product item){
     Constants.instance.selectedProdId=item.id;
     Constants.instance.selectedStoreId=item.store_id;

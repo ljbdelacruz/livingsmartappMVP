@@ -179,7 +179,7 @@ class MStoreTransactionsPageState extends CleanPageState<MStoreTransactionPresen
                                   Tab(text: forPickup > 0 ? "For Pickup("+forPickup.toString()+")" : "For Pickup"),
                                   Tab(text: forDelivery > 0 ? "For Delivery("+forDelivery.toString()+")" : "For Delivery"),
                                   Tab(text: delivered > 0 ? "Delivered("+delivered.toString()+")" : "Delivered"),
-                                  Tab(text: cancelled > 0 ? "Delivered("+cancelled.toString()+")" : "Cancelled"),
+                                  Tab(text: cancelled > 0 ? "Cancelled("+cancelled.toString()+")" : "Cancelled"),
                               ])), preferredSize: Size.fromHeight(100)),
                         backgroundColor: Colors.transparent,
                         body:TabBarView(children: [

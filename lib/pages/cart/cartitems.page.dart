@@ -51,7 +51,7 @@ class CartItemPageState extends CleanPageState<CartPresenter> {
         presenter.removeCartStoreItem(element.id, index);
       }, (){
         //TODO: click item
-        Constants.instance.selectedProdId=element.product_id;
+        Constants.instance.selectedProdId=element.id;
         NavigatorService.instance.toProductInfo(context);
       }, (){
         presenter.increment(element);
