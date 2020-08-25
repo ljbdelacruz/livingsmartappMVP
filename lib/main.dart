@@ -1,9 +1,15 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:clean_data/services/logger.service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:clean_data/base/data_instantiator.dart';
 import 'package:clean_data/base/clean_app.dart';
 import 'package:livingsmart_app/livingsmartapp.dart';
 import 'package:livingsmart_app/services/firebase.service.dart';
+import 'config/constants.dart';
 import 'pages/login/login.page.dart';
 
 void main() async {
@@ -13,10 +19,13 @@ void main() async {
   await dataInstantiator.initAppDependencies();
   ///Runs the app
   FirebaseRemoteConfigService.instance = FirebaseRemoteConfigService();
-  
+
+
   runApp(LivingSmartApp(dataInstantiator)
   );
+
 }
+
 
 
 

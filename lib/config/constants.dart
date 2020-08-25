@@ -49,6 +49,7 @@ class Constants{
   //TODO: invoke selectedTab transaction tab driver;
   int selectedTab=0;
   List<FoodyCategory> foodCategories = [];
+  String fcmToken="";
   
 
   //Firebase
