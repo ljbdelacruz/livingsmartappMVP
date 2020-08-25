@@ -118,11 +118,11 @@ class JobListSubPage extends StatelessWidget {
             SizedBox(height:5),
             buttonWidget("PICKUP DIRECTION", (){
               this.pickupDirection(vm.currentDeliveryInfo.details.transaction_code);
-            }, width:150),
+            }, width:120, height: 60),
             SizedBox(height:5),
             buttonWidget("DELIVERY DIRECTION", (){
               this.deliveryDirection(vm.currentDeliveryInfo.details.transaction_code);
-            }, width:150),
+            }, width:120, height: 60),
           ])
       ]),
     ])) : Container(child:Text("No Delivery In Progress"));

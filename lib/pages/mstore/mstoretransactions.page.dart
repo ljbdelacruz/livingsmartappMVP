@@ -12,6 +12,7 @@ import 'package:foody_ui/components/header/tabbed1.header.dart';
 import 'package:foody_ui/components/progress/circularloading.progress.dart';
 import 'package:foody_ui/typdef/mytypedef.dart';
 import 'package:foody_ui/util/text_style_util.dart';
+import 'package:livingsmart_app/components/widgets.ui.dart';
 import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/pages/mstore/mstoretransaction.presenter.dart';
 import 'package:clean_data/model/transactions.dart';
@@ -67,10 +68,10 @@ class MStoreTransactionsPageState extends CleanPageState<MStoreTransactionPresen
             var item = transactions[row];
             return transactionCell(item);
           },
-          divider: Container(
-            color: Colors.grey,
-            height: 1.0,
-          ),
+          // divider: Container(
+          //   color: Colors.grey,
+          //   height: 1.0,
+          // ),
         ),
       ),
     );
@@ -78,6 +79,7 @@ class MStoreTransactionsPageState extends CleanPageState<MStoreTransactionPresen
   Widget buttonCells(MStoreTransaction item){
     if(item.status == "pending"){
       return Column(children:[
+
          buttonUI("ACCEPT", (){
             //accept request
             presenter.acceptTransaction(item.transaction_code);
@@ -99,29 +101,32 @@ class MStoreTransactionsPageState extends CleanPageState<MStoreTransactionPresen
     }
   }
   Widget buttonUI(String lbl, NormalCallback click){
-    return OutlineButton(onPressed: click,child:Text(lbl));
+    return WidgetUI.instance.buttonWidget(lbl, click, width:100);
+    // return OutlineButton(onPressed: click,child:Text(lbl));
   }
 
   Widget transactionCell(MStoreTransaction item){
     return GestureDetector(onTap:(){
       Constants.instance.selectedTransaction=item;
       NavigatorService.instance.toMStoreTransactionInfo(context);
-    }, child: Container(
+    }, child: Card(child: Container(
       padding:EdgeInsets.all(20),
       child: Column(children:[
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children:[
+        Text(item.customer_name, style:TextStyleUtil.textBold(fontSz:12, tColor:Colors.grey)),
+        Text(item.customer_mobile, style:TextStyleUtil.textBold(fontSz:12, tColor:Colors.grey)),
+      ]),
+      SizedBox(height:10),
+      WidgetUI.instance.dividerWidget(context),
+      SizedBox(height:10),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children:[
         Container(
           width:MediaQuery.of(context).size.width-200,
           child:Text(item.customer_address, style:TextStyleUtil.textBold(fontSz:12, tColor:Colors.grey))),
-      ]),
-      SizedBox(height:10),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children:[
-        Text(item.customer_name, style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey)),
-        Text(item.customer_mobile, style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey)),
       ]),
       SizedBox(height:20),
       Container(
@@ -132,7 +137,7 @@ class MStoreTransactionsPageState extends CleanPageState<MStoreTransactionPresen
          Text(item.products.toString()+" Items", style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey)),
          buttonCells(item),
         ]))
-    ])));
+    ]))));
   }
 
   Widget pendingTab(){

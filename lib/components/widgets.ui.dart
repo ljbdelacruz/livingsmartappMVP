@@ -108,5 +108,8 @@ class WidgetUI{
         height:height, width:width,
         child:ButtonLoader(ButtonLoaderVM.alert(title, 12, Colors.white, 10, 40, ColorsService.instance.primaryColor()), click, (){}));
   }
+  Widget dividerWidget(BuildContext context){
+    return Container(width:MediaQuery.of(context).size.width, child: Divider(height: 1, thickness: 1, color:Colors.grey));
+  }
 
 }
