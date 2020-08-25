@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 import 'package:clean_data/base/architechture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';

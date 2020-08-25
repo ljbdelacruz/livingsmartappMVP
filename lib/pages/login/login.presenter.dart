@@ -41,7 +41,7 @@ class LoginPresenter extends CleanPresenter {
   }
   void mobileLogin() async{
     try {
-      Constants.instance.session = await userAuthUseCase.mobileLogin(email.text, password.text, true);
+      Constants.instance.session = await userAuthUseCase.mobileLogin(email.text, password.text, true, Constants.instance.fcmToken);
       if(Constants.instance.session != null){
         if(Constants.instance.session.user.role == "mstore"){
           NavigatorService.instance.toMStore(context);
