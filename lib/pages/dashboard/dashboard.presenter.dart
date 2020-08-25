@@ -245,7 +245,7 @@ class DashboardPresenter extends CleanPresenter {
     try{
       Constants.instance.userTransactions = await customerUseCase.getTransactions();
       //TODO: extract in progress order
-      Constants.instance.inProgressTransaction = Constants.instance.userTransactions.where((element) => element.status != "delivered").first;
+      Constants.instance.inProgressTransaction = Constants.instance.userTransactions.where((element) => element.status != "delivered" && element.status != "cancelled").first;
       if(Constants.instance.inProgressTransaction != null){
         this.isDeliveryInProgress=true;
         Constants.instance.isDeliveryInProgress=true;

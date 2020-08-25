@@ -5,6 +5,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:foody_ui/components/buttons/buttonloader.buttons.dart';
+import 'package:foody_ui/services/color.service.dart';
 import 'package:foody_ui/typdef/mytypedef.dart';
 import 'package:foody_ui/util/text_style_util.dart';
 
@@ -101,5 +103,10 @@ class WidgetUI{
     );
   }
 
+  Widget buttonWidget(String title, NormalCallback click, {double width = 80, double height = 50}){
+    return Container(
+        height:height, width:width,
+        child:ButtonLoader(ButtonLoaderVM.alert(title, 12, Colors.white, 10, 40, ColorsService.instance.primaryColor()), click, (){}));
+  }
 
 }

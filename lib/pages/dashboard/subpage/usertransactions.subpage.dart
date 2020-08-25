@@ -98,39 +98,47 @@ class UserTransactionsSubPage extends StatelessWidget {
               click(row);
             });
           },
-          divider: Container(
-            color: Colors.grey,
-            height: 1.0,
-          ),
         ),
       ),
     );
   }
   Widget transactionCell(BuildContext context, UserTransaction item, NormalCallback click){
-    return Container(
-      padding:EdgeInsets.all(20),
+    return Card(
+      // padding:EdgeInsets.all(20),
       child: Column(children:[
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children:[
+        Padding(padding: EdgeInsets.only(top:10, left:20, right:20), child:
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children:[
           Text("Store: "+item.store_name, style:TextStyleUtil.textBold(fontSz:10, tColor:Colors.grey)),
-          Text(item.store_mobile, style:TextStyleUtil.textBold(fontSz:10, tColor:Colors.grey)),
-        ]),
+          Text(item.status.toUpperCase(), style:TextStyleUtil.textBold(fontSz:10, tColor:Colors.grey)),
+        ])),
+        Container(
+          width:MediaQuery.of(context).size.width,
+          child:Divider(height: 2, thickness:1, color:Colors.grey)
+        ),
         SizedBox(height:10),
+        Padding(padding: EdgeInsets.only(top:10, left:20, right:20), child:
         Row(children:[
           Icon(Icons.location_on, size:15, color:Colors.grey),
           SizedBox(width:10),
           Container(
-            width:MediaQuery.of(context).size.width-65,
+            width:MediaQuery.of(context).size.width-80,
             child:Text("Pickup: "+item.store_address, style:TextStyleUtil.textBold(fontSz:10, tColor:Colors.grey)))
-        ]),
+        ])),
         SizedBox(height:20),
-        Text(item.status.toUpperCase(), style:TextStyleUtil.textNormal(fontSz:9))
+        Padding(padding: EdgeInsets.only(top:0, left:20, right:20), child:
+        Text("#"+item.transaction_code, style:TextStyleUtil.textNormal(fontSz:9)))
       ]),
+      Container(
+          width:MediaQuery.of(context).size.width,
+          child:Divider(height: 2, thickness:1, color:Colors.grey)
+      ),
       SizedBox(height:20),
+      Padding(padding: EdgeInsets.only(top:0, left:20, right:20), child:
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children:[
@@ -140,7 +148,7 @@ class UserTransactionsSubPage extends StatelessWidget {
           buttons((){
             this.transactionInfo(item.transaction_code);
           })
-      ]),
+      ])),
     ]));
   }
   Widget buttons(NormalCallback click){

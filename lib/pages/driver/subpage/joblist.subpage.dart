@@ -4,11 +4,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_section_table_view/flutter_section_table_view.dart';
+import 'package:foody_ui/components/buttons/buttonloader.buttons.dart';
 import 'package:foody_ui/components/header/tabbed1.header.dart';
 import 'package:clean_data/model/delivery.dart';
 import 'package:foody_ui/components/progress/circularloading.progress.dart';
+import 'package:foody_ui/services/color.service.dart';
 import 'package:foody_ui/typdef/mytypedef.dart';
 import 'package:foody_ui/util/text_style_util.dart';
+import 'package:livingsmart_app/components/widgets.ui.dart';
 
 class JobListSubPage extends StatelessWidget {
   final JobListSubPageVM vm;
@@ -100,22 +103,26 @@ class JobListSubPage extends StatelessWidget {
         Container(
           // width:MediaQuery.of(context).size.width-250,
           child:Text(vm.currentDeliveryInfo.products.length.toString()+" Items", style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey))),
-
           Column(children:[
-            OutlineButton(onPressed:(){
+            buttonWidget("INFO", (){
               this.viewInfo(vm.currentDeliveryInfo.details.transaction_code);
-            }, child: Text("INFO", style:TextStyleUtil.textNormal(fontSz:8))),
-            OutlineButton(onPressed:(){
+            }, width:120),
+            SizedBox(height:5),
+            buttonWidget("DELIVERED", (){
               deliveredJob(vm.currentDeliveryInfo.details.transaction_code);
-            }, child: Text("DELIVERED", style:TextStyleUtil.textNormal(fontSz:8))),
-            OutlineButton(onPressed:(){
-            }, child: Text("CANCELLED", style:TextStyleUtil.textNormal(fontSz:8))),
-            OutlineButton(onPressed:(){
+            }, width:120),
+            SizedBox(height:5),
+            buttonWidget("CANCELLED", (){
               this.pickupDirection(vm.currentDeliveryInfo.details.transaction_code);
-            }, child: Text("Pickup DIRECTION", style:TextStyleUtil.textNormal(fontSz:8))),
-            OutlineButton(onPressed:(){
+            }, width:120),
+            SizedBox(height:5),
+            buttonWidget("PICKUP DIRECTION", (){
+              this.pickupDirection(vm.currentDeliveryInfo.details.transaction_code);
+            }, width:150),
+            SizedBox(height:5),
+            buttonWidget("DELIVERY DIRECTION", (){
               this.deliveryDirection(vm.currentDeliveryInfo.details.transaction_code);
-            }, child: Text("Delivery DIRECTION", style:TextStyleUtil.textNormal(fontSz:8))),
+            }, width:150),
           ])
       ]),
     ])) : Container(child:Text("No Delivery In Progress"));
@@ -137,16 +144,12 @@ class JobListSubPage extends StatelessWidget {
               click(row);
             });
           },
-          divider: Container(
-            color: Colors.grey,
-            height: 1.0,
-          ),
         ),
       ),
     );
   }
   Widget transactionCell(BuildContext context, RiderDelivery item, NormalCallback click){
-    return Container(
+    return Card(child: Container(
       padding:EdgeInsets.all(20),
       child: Column(children:[
       Column(
@@ -154,11 +157,15 @@ class JobListSubPage extends StatelessWidget {
         children:[
         Text("Store: "+item.store_name, style:TextStyleUtil.textBold(fontSz:10, tColor:Colors.grey)),
         SizedBox(height:10),
+        Container(
+          width:MediaQuery.of(context).size.width,
+          child:Divider(height:1, thickness: 1, color:Colors.grey)
+        ),
         Row(children:[
           Icon(Icons.location_on, size:15, color:Colors.grey),
           SizedBox(width:10),
           Container(
-            width:MediaQuery.of(context).size.width-65,
+            width:MediaQuery.of(context).size.width-80,
             child:Text("Pickup: "+item.store_address, style:TextStyleUtil.textBold(fontSz:10, tColor:Colors.grey)))
         ]),
         SizedBox(height:20),
@@ -169,11 +176,15 @@ class JobListSubPage extends StatelessWidget {
         Text("# "+item.customer_mobile, style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey)),
         ]),
         SizedBox(height:10),
+        Container(
+          width:MediaQuery.of(context).size.width,
+          child:Divider(height:1, thickness: 1, color:Colors.grey)
+        ),
         Row(children:[
           Icon(Icons.location_on, size:15, color:Colors.grey),
           SizedBox(width:10),
           Container(
-            width:MediaQuery.of(context).size.width-65,
+            width:MediaQuery.of(context).size.width-80,
             child:Text("Deliver: "+item.customer_address, style:TextStyleUtil.textBold(fontSz:10, tColor:Colors.grey)))
         ]),
       ]),
@@ -184,22 +195,25 @@ class JobListSubPage extends StatelessWidget {
         Container(
           child:Text(item.products.toString()+" Items", style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey))),
           button(item, click, (){
-            print("Event Clicked");
             this.viewInfo(item.transaction_code);
           })
       ]),
-    ]));
+    ])));
   }
 
   Widget button(RiderDelivery info, NormalCallback click, NormalCallback viewInfo){
     if(info.status == "for pickup"){
       return Row(children:[
-        OutlineButton(onPressed:click, child: Text("ACCEPT", style:TextStyleUtil.textNormal(fontSz:11))),
-        OutlineButton(onPressed:viewInfo, child: Text("INFO", style:TextStyleUtil.textNormal(fontSz:11))),
+        buttonWidget("ACCEPT", click, width:100),
+        buttonWidget("INFO", viewInfo),
       ]) ;
     }else{
-      return OutlineButton(onPressed:viewInfo, child: Text("INFO", style:TextStyleUtil.textNormal(fontSz:11)));
+      return buttonWidget("INFO", viewInfo);
     }
+  }
+
+  Widget buttonWidget(String title, NormalCallback click, {double width = 80, double height = 50}){
+    return WidgetUI.instance.buttonWidget(title, click, width:width, height:height);
   }
 
 

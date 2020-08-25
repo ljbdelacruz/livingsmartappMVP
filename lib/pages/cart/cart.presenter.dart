@@ -269,6 +269,8 @@ class CartPresenter extends CleanPresenter {
   checkout() async{
     try{
       var response = await customerUseCase.checkoutCart(this.storeCartId, this.defaultAddress.id, "cod");
+      print("Checkout Cart");
+      print(response.data.toString());
       this.showSnackBar("Checkout Success");
       Timer(Duration(milliseconds: 2000),(){
         NavigatorService.instance.toDashboardPR(context);
