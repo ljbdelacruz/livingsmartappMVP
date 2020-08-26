@@ -1,11 +1,8 @@
 
 
 
-import 'dart:typed_data';
-
 import 'package:foody_ui/typdef/mytypedef.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapService{
   static MapService instance = MapService();
@@ -42,6 +39,28 @@ class MapService{
       success(address.name+","+address.country+","+address.locality+","+address.subAdministrativeArea+" "+address.subLocality+" "+address.thoroughfare+" "+address.subThoroughfare);
     });
   }
+
+  Future<double> getDistanceMeters(Position startCoordinates, Position destinationCoordinates) async{
+    double data = await Geolocator().distanceBetween(
+      startCoordinates.latitude,
+      startCoordinates.longitude,
+      destinationCoordinates.latitude,
+      destinationCoordinates.longitude,
+    );
+    return data;
+  }
+  String getDistanceKM(Position startCoordinates, Position destinationCoordinates, GetDoubleData response){
+    getDistanceMeters(startCoordinates, destinationCoordinates).then((value){
+      print("Calculated Meters");
+      print(value);
+      response(value/1000);
+    });
+  }
+
+  Position convertToPosition(String lon, String lat){
+    return Position(longitude: double.parse(lon), latitude: double.parse(lat));
+  }
+
 }
 
 typedef GetPlaceMarkList(List<Placemark> list);

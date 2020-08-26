@@ -13,7 +13,6 @@ import 'package:clean_data/usecase/unauthenticated_use_case.dart';
 import 'package:clean_data/usecase/user_auth_use_case.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:foody_ui/components/buttons/shoppingcart.button.dart';
 import 'package:foody_ui/components/drawer/livingsmart.drawer.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
@@ -23,6 +22,7 @@ import 'package:livingsmart_app/config/constants.dart';
 import 'package:livingsmart_app/pages/dashboard/subpage/home.subpage.dart';
 import 'package:livingsmart_app/services/delivery.service.dart';
 import 'package:livingsmart_app/services/firebasedatabase.service.dart';
+import 'package:livingsmart_app/services/map.service.dart';
 import 'package:livingsmart_app/services/navigator.service.dart';
 import 'package:clean_data/usecase/customer_use_case.dart';
 import 'package:clean_data/usecase/general_data_use_case.dart';
@@ -213,6 +213,9 @@ class DashboardPresenter extends CleanPresenter {
       this.stores = await customerUseCase.getStoresList();
       cleanPageState.setState((){
         homeSubpage.stores=this.stores;
+        homeSubpage.stores.forEach((element) { 
+          this.fetchDistance(element);
+        });
       });
     }on DioError catch (e) {
        switch (e.type) {
@@ -430,6 +433,17 @@ class DashboardPresenter extends CleanPresenter {
   selectedCategory(String category){
     Constants.instance.selectedCategory = category;
     NavigatorService.instance.toSearchProduct(context);
+  }
+
+  fetchDistance(LivingSmartStores store){
+    if(Constants.instance.mapService.currentPosition != null){
+      MapService.instance.getDistanceKM(Constants.instance.mapService.currentPosition, MapService.instance.convertToPosition(store.longitude, store.latitude), (calDistance){
+        store.distance=calDistance.toStringAsFixed(2);
+        cleanPageState.setState(() {});
+      });
+    }else{
+        store.distance="0";
+    }
   }
 
 
