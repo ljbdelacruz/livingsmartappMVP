@@ -65,67 +65,83 @@ class JobListSubPage extends StatelessWidget {
     });
   }
   Widget currentDeliveryInfo(BuildContext context){
-    return vm.currentDeliveryInfo != null ? Container(
-      padding:EdgeInsets.all(20),
-      child: Column(children:[
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children:[
-        Text("Store: "+vm.currentDeliveryInfo.details.store_name, style:TextStyleUtil.textBold(fontSz:10, tColor:Colors.grey)),
-        SizedBox(height:10),
-        Row(children:[
-          Icon(Icons.location_on, size:15, color:Colors.grey),
-          SizedBox(width:10),
-          Container(
-            width:MediaQuery.of(context).size.width-65,
-            child:Text("Pickup: "+vm.currentDeliveryInfo.details.store_address, style:TextStyleUtil.textBold(fontSz:10, tColor:Colors.grey)))
-        ]),
-        SizedBox(height:20),
-        Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children:[
-        Text("Name: "+vm.currentDeliveryInfo.details.customer_name, style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey)),
-        Text("# "+vm.currentDeliveryInfo.details.customer_mobile, style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey)),
-        ]),
-        SizedBox(height:10),
-        Row(children:[
-          Icon(Icons.location_on, size:15, color:Colors.grey),
-          SizedBox(width:10),
-          Container(
-            width:MediaQuery.of(context).size.width-65,
-            child:Text("Deliver: "+vm.currentDeliveryInfo.details.store_address, style:TextStyleUtil.textBold(fontSz:10, tColor:Colors.grey)))
-        ]),
-      ]),
+    return vm.currentDeliveryInfo == null ? Container(child:Text("No Delivery In Progress")) : 
+    Container(child:Column(children:[
       SizedBox(height:20),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children:[
-        Container(
-          // width:MediaQuery.of(context).size.width-250,
-          child:Text(vm.currentDeliveryInfo.products.length.toString()+" Items", style:TextStyleUtil.textBold(fontSz:9, tColor:Colors.grey))),
-          Column(children:[
+      Container(
+        decoration: BoxDecoration(
+                border: Border.all(color:Colors.grey),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                color: Colors.transparent,
+        ),
+        padding:EdgeInsets.only(left:10, right:10, top:20, bottom:20),
+        width:MediaQuery.of(context).size.width-40,
+        child:Row(children:[
+          Icon(Icons.pin_drop, size:20, color:Colors.grey),
+          SizedBox(width:20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children:[
+            Text("PICK UP:", style:TextStyleUtil.textBold(fontSz:15, tColor: Colors.grey)),
+            Container(
+              child:Text(vm.currentDeliveryInfo.details.store_name)),
+            Container(
+              width:MediaQuery.of(context).size.width-120,
+              child:Text(vm.currentDeliveryInfo.details.store_address)),
+            directionButton((){
+              this.pickupDirection(vm.currentDeliveryInfo.details.transaction_code);
+            }),
             buttonWidget("INFO", (){
               this.viewInfo(vm.currentDeliveryInfo.details.transaction_code);
-            }, width:120),
-            SizedBox(height:5),
+            }, width:120)
+          ])
+        ])
+      ),
+      Container(
+        padding:EdgeInsets.only(left:10, right:10, top:20, bottom:20),
+        width:MediaQuery.of(context).size.width-40,
+        decoration: BoxDecoration(
+                border: Border.all(color:Colors.grey),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+                color: Colors.transparent,
+        ),
+        child:Row(children:[
+          Icon(Icons.pin_drop, size:20, color:Colors.grey),
+          SizedBox(width:20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children:[
+            Text("DELIVERY:", style:TextStyleUtil.textBold(fontSz:15, tColor: Colors.grey)),
+            Container(
+              child:Text(vm.currentDeliveryInfo.details.customer_name)),
+            Container(
+              width:MediaQuery.of(context).size.width-120,
+              child:Text(vm.currentDeliveryInfo.details.customer_address)),
+            directionButton((){
+              this.deliveryDirection(vm.currentDeliveryInfo.details.transaction_code);
+            }),
             buttonWidget("DELIVERED", (){
               deliveredJob(vm.currentDeliveryInfo.details.transaction_code);
             }, width:120),
-            SizedBox(height:5),
             buttonWidget("CANCELLED", (){
               this.pickupDirection(vm.currentDeliveryInfo.details.transaction_code);
             }, width:120),
-            SizedBox(height:5),
-            buttonWidget("PICKUP DIRECTION", (){
-              this.pickupDirection(vm.currentDeliveryInfo.details.transaction_code);
-            }, width:120, height: 60),
-            SizedBox(height:5),
-            buttonWidget("DELIVERY DIRECTION", (){
-              this.deliveryDirection(vm.currentDeliveryInfo.details.transaction_code);
-            }, width:120, height: 60),
-          ])
-      ]),
-    ])) : Container(child:Text("No Delivery In Progress"));
+          ]),
+        ])
+      )
+    ]));
+
+
+  }
+
+  Widget directionButton(NormalCallback click){
+    return FlatButton(
+                        padding: EdgeInsets.all(0),
+                        onPressed: click,
+                        child: Icon(Icons.directions, color: Colors.white),
+                        color: ColorsService.instance.primaryColor(),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                      );
   }
 
   Widget getTransactionsList(BuildContext context, List<RiderDelivery> transactions, GetIntData click){
