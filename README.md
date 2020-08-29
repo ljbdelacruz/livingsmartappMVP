@@ -25,5 +25,9 @@ adb devices
 
 then disconnect device flutter run should work make sure connected to same internet
 
+Documentation of the system:
+
+https://docs.google.com/document/d/1yW-Awu_r8Xtu_vGD3CbAJPsHRpbf6HWuTZTgX0jtBVk/edit?usp=sharing
+
 
 
